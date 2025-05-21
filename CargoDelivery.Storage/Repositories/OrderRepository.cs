@@ -23,6 +23,25 @@ public class OrderRepository : IOrderRepository
                                 .Include(ord => ord.Courier)
                                 .ToListAsync(cancellationToken);
     }
+    public async Task<List<OrderDb>> SearchAsync(string query, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return await GetAllAsync();
+        
+        return await _context.Orders
+                                .Where(ord => 
+                                    ord.Client.Name.ToLower().Contains(query.ToLower()) ||
+                                    ord.Cargo.Name.ToLower().Contains(query.ToLower()) ||
+                                    ord.Courier.Name.ToLower().Contains(query.ToLower()) ||
+                                    ord.DestinationAddress.ToLower().Contains(query.ToLower()) ||
+                                    ord.TakeAddress.ToLower().Contains(query.ToLower()) ||
+                                    ord.DestinationAddress.ToLower().Contains(query.ToLower()))
+                                .AsNoTracking()
+                                .Include(ord => ord.Cargo)   
+                                .Include(ord => ord.Client)  
+                                .Include(ord => ord.Courier)
+                                .ToListAsync(cancellationToken);
+    }
 
     public async Task<OrderDb> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -37,5 +56,19 @@ public class OrderRepository : IOrderRepository
         var createdOrder = await _context.Orders.AddAsync(orderDb, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return createdOrder.Entity;
+    }
+
+    public async Task<bool> UpdateAsync(OrderDb orderDb, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            _context.Entry(orderDb).State = EntityState.Modified;
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 }

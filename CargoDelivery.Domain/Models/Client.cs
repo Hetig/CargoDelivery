@@ -1,4 +1,4 @@
-namespace CargoDelivery.Storage.Entities;
+namespace CargoDelivery.Domain.Models;
 
 public class Client
 {

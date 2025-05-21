@@ -2,6 +2,8 @@ using AutoMapper;
 using CargoDelivery.API.Dtos;
 using CargoDelivery.Domain.Interfaces;
 using CargoDelivery.Domain.Models;
+using CargoDelivery.Storage.Entities;
+using CargoDelivery.Storage.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CargoDelivery.API.Controllers;
@@ -19,7 +21,7 @@ public class OrdersController : ControllerBase
         _orderService = orderService;
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<ActionResult<OrderResponseDto>> Create([FromBody] OrderCreateDto orderDto, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
@@ -43,5 +45,52 @@ public class OrdersController : ControllerBase
     {
         var orders = await _orderService.GetAllAsync(cancellationToken);
         return Ok(_mapper.Map<List<Order>, List<OrderResponseDto>>(orders));
+    }
+    
+    [HttpGet("search")]
+    public async Task<ActionResult<List<OrderResponseDto>>> Search([FromQuery] string query, CancellationToken cancellationToken)
+    {
+        return Ok(await _orderService.SearchAsync(query, cancellationToken));
+    }
+    
+    [HttpPut("update")]
+    public async Task<IActionResult> Update([FromBody] OrderUpdateDto orderDto, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var order = _mapper.Map<OrderUpdateDto, Order>(orderDto);
+            var result = await _orderService.UpdateAsync(order, cancellationToken);
+            
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Internal server error");
+        }
+    }
+    
+    [HttpPost("{orderId}/assign/{courierId}")]
+    public async Task<IActionResult> AssignToCourier([FromRoute] Guid orderId, [FromRoute] Guid courierId, CancellationToken cancellationToken)
+    {
+        var result = await _orderService.AssignToCourierAsync(courierId,
+                                                                    orderId, 
+                                                                    cancellationToken);
+        if (!result) return NotFound();
+        return NoContent();
+    }
+
+    [HttpPost("{orderId}/setstatus/{status}")]
+    public async Task<IActionResult> SetStatus([FromRoute] Guid orderId, [FromRoute] OrderStatus status, CancellationToken cancellationToken)
+    {
+        var result = await _orderService.SetStatusAsync(orderId, status, cancellationToken);
+        
+        if(!result) return NotFound();
+        return NoContent();
     }
 }

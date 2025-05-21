@@ -79,7 +79,7 @@ namespace CargoDelivery.Storage.Migrations
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CourierId")
+                    b.Property<Guid?>("CourierId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateDateTime")
@@ -135,9 +135,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasOne("CargoDelivery.Storage.Entities.CourierDb", "Courier")
                         .WithMany()
-                        .HasForeignKey("CourierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourierId");
 
                     b.Navigation("Cargo");
 

@@ -1,4 +1,3 @@
-using CargoDelivery.Storage.Entities;
 using CargoDelivery.Storage.Enums;
 
 namespace CargoDelivery.Domain.Models;

@@ -3,8 +3,10 @@ using CargoDelivery.API.ValidationAttributes;
 
 namespace CargoDelivery.API.Dtos;
 
-public class OrderCreateDto
+public class OrderUpdateDto
 {
+    [Required]
+    public Guid Id { get; init; }
     [Required]
     public ClientDto Client { get; init; }
     [Required]
@@ -13,13 +15,12 @@ public class OrderCreateDto
     [StringLength(150, MinimumLength = 3)] 
     public string TakeAddress { get; init; }
     [Required]
-    [FutureDate(ErrorMessage = "Event date must be in the future")]
     public DateTime TakeDateTime { get; init; }
-    public CourierDto? Courier { get; init; }
+    [Required]
+    public CourierDto Courier { get; init; }
     [Required]
     [StringLength(150, MinimumLength = 3)] 
     public string DestinationAddress { get; init; }
     [Required]
-    [FutureDate(ErrorMessage = "Event date must be in the future")]
     public DateTime DestinationDateTime { get; init; }
 }

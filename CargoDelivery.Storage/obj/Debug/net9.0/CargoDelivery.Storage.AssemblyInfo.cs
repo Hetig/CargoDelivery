@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CargoDelivery.Storage")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e23c1aeeed4e7f1cc433222786f16162283f7743")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba8bc4abcba5ae8f278eb69cb47591854bb2d274")]
 [assembly: System.Reflection.AssemblyProductAttribute("CargoDelivery.Storage")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CargoDelivery.Storage")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
