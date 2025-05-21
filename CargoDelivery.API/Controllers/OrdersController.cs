@@ -85,10 +85,37 @@ public class OrdersController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{orderId}/setstatus/{status}")]
-    public async Task<IActionResult> SetStatus([FromRoute] Guid orderId, [FromRoute] OrderStatus status, CancellationToken cancellationToken)
+    [HttpPost("inprocess/{orderId}")]
+    public async Task<IActionResult> SetInProcessStatus([FromRoute] Guid orderId, CancellationToken cancellationToken)
     {
-        var result = await _orderService.SetStatusAsync(orderId, status, cancellationToken);
+        var result = await _orderService.SetInProcessStatusAsync(orderId, cancellationToken);
+        
+        if(!result) return NotFound();
+        return NoContent();
+    }
+    
+    [HttpPost("done/{orderId}")]
+    public async Task<IActionResult> SetDoneStatus([FromRoute] Guid orderId, CancellationToken cancellationToken)
+    {
+        var result = await _orderService.SetDoneStatusAsync(orderId, cancellationToken);
+        
+        if(!result) return NotFound();
+        return NoContent();
+    }
+    
+    [HttpPost("cancel/{orderId}")]
+    public async Task<IActionResult> SetCancelStatus([FromRoute] Guid orderId, [FromQuery] string comment, CancellationToken cancellationToken)
+    {
+        var result = await _orderService.SetCancelStatusAsync(orderId, comment, cancellationToken);
+        
+        if(!result) return NotFound();
+        return NoContent();
+    }
+
+    [HttpDelete("delete/{orderId}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid orderId, CancellationToken cancellationToken)
+    {
+        var result = await _orderService.DeleteAsync(orderId, cancellationToken);
         
         if(!result) return NotFound();
         return NoContent();

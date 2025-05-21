@@ -14,8 +14,8 @@ public class OrderDb
     public CourierDb? Courier { get; set; }
     public string DestinationAddress { get; init; }
     public DateTime DestinationDateTime { get; init; }
-    public bool Deleted { get; init; } = false;
-    public string? DeletedComment { get; init; }
+    public bool Deleted { get; set; }
+    public string? CancelledComment { get; set; }
 
     public OrderDb()
     {

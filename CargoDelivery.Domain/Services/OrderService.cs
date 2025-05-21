@@ -63,13 +63,36 @@ public class OrderService : IOrderService
         return await _orderRepository.UpdateAsync(assignedOrder, cancellationToken);
     }
 
-    public async Task<bool> SetStatusAsync(Guid orderId, OrderStatus status, CancellationToken cancellationToken)
+    public async Task<bool> SetInProcessStatusAsync(Guid orderId, CancellationToken cancellationToken)
     {
-        var orderToChangeStatus = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
-
-        if (orderToChangeStatus == null) return false;
+        var orderInProcess = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        orderInProcess.Status = OrderStatus.InProcess;
         
-        orderToChangeStatus.Status = status;
-        return await _orderRepository.UpdateAsync(orderToChangeStatus, cancellationToken);
+        return await _orderRepository.UpdateAsync(orderInProcess, cancellationToken);
+    }
+
+    public async Task<bool> SetDoneStatusAsync(Guid orderId, CancellationToken cancellationToken)
+    {
+        var orderToDone = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        orderToDone.Status = OrderStatus.Done;
+        
+        return await _orderRepository.UpdateAsync(orderToDone, cancellationToken);
+    }
+
+    public async Task<bool> SetCancelStatusAsync(Guid orderId, string comment, CancellationToken cancellationToken)
+    {
+        var orderToCancel = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        orderToCancel.Status = OrderStatus.Cancelled;
+        orderToCancel.CancelledComment = comment;
+        
+        return await _orderRepository.UpdateAsync(orderToCancel, cancellationToken);
+    }
+
+    public async Task<bool> DeleteAsync(Guid orderId, CancellationToken cancellationToken)
+    {
+        var orderToDelete = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        orderToDelete.Deleted = true;
+        
+        return await _orderRepository.UpdateAsync(orderToDelete, cancellationToken);
     }
 }
