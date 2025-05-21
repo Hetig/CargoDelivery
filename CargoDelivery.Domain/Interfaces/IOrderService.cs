@@ -4,7 +4,7 @@ namespace CargoDelivery.Domain.Interfaces;
 
 public interface IOrderService
 {
-    Task<List<Order>> GetAllAsync();
-    Task<Order> GetByIdAsync(Guid id);
-    Task<Order> AddAsync(Order order);
+    Task<List<Order>> GetAllAsync(CancellationToken cancellationToken);
+    Task<Order> GetByIdAsync(Guid id,  CancellationToken cancellationToken);
+    Task<Order> AddAsync(Order order,  CancellationToken cancellationToken);
 }

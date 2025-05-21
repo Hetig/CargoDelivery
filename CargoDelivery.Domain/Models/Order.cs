@@ -7,7 +7,7 @@ public class Order
 {
     public Guid Id { get; init; }
     public DateTime CreateDateTime { get; init; }
-    public BidStatus Status { get; init; }
+    public OrderStatus Status { get; init; }
     public Client Client { get; init; }
     public Cargo Cargo { get; init; }
     public string TakeAddress { get; init; }

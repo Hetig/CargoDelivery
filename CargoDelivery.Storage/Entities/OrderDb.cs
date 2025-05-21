@@ -6,7 +6,7 @@ public class OrderDb
 {
     public Guid Id { get; init; }
     public DateTime CreateDateTime { get; init; }
-    public BidStatus Status { get; init; }
+    public OrderStatus Status { get; init; }
     public ClientDb Client { get; init; }
     public CargoDb Cargo { get; init; }
     public string TakeAddress { get; init; }
@@ -20,6 +20,6 @@ public class OrderDb
     public OrderDb()
     {
         CreateDateTime = DateTime.UtcNow;
-        Status = BidStatus.New;
+        Status = OrderStatus.New;
     }
 }

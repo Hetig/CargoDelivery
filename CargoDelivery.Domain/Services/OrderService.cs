@@ -17,21 +17,21 @@ public class OrderService : IOrderService
         _repository = repository;
     }
     
-    public async Task<List<Order>> GetAllAsync()
+    public async Task<List<Order>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var orders = await _repository.GetAllAsync();
+        var orders = await _repository.GetAllAsync(cancellationToken);
         return _mapper.Map<List<Order>>(orders);
     }
 
-    public async Task<Order> GetByIdAsync(Guid id)
+    public async Task<Order> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var order = await _repository.GetByIdAsync(id);
+        var order = await _repository.GetByIdAsync(id, cancellationToken);
         return _mapper.Map<Order>(order);
     }
 
-    public async Task<Order> AddAsync(Order order)
+    public async Task<Order> AddAsync(Order order, CancellationToken cancellationToken)
     {
-        var createdOrder = await _repository.AddAsync(_mapper.Map<OrderDb>(order));
+        var createdOrder = await _repository.AddAsync(_mapper.Map<OrderDb>(order), cancellationToken);
         return _mapper.Map<Order>(createdOrder);
     }
 }

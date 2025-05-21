@@ -1,6 +1,6 @@
 namespace CargoDelivery.Storage.Enums;
 
-public enum BidStatus
+public enum OrderStatus
 {
     New = 0,
     InProcess = 1,

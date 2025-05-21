@@ -14,20 +14,28 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
     
-    public async Task<List<OrderDb>> GetAllAsync()
+    public async Task<List<OrderDb>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Orders.ToListAsync();
+        return await _context.Orders
+                                .AsNoTracking()
+                                .Include(ord => ord.Cargo)   
+                                .Include(ord => ord.Client)  
+                                .Include(ord => ord.Courier)
+                                .ToListAsync(cancellationToken);
     }
 
-    public async Task<OrderDb> GetByIdAsync(Guid id)
+    public async Task<OrderDb> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Orders.FirstOrDefaultAsync(ord => ord.Id == id);
+        return await _context.Orders.Include(ord => ord.Cargo)
+                                    .Include(ord => ord.Client)
+                                    .Include(ord => ord.Courier)
+                                        .FirstOrDefaultAsync(ord => ord.Id == id, cancellationToken);
     }
 
-    public async Task<OrderDb> AddAsync(OrderDb orderDb)
+    public async Task<OrderDb> AddAsync(OrderDb orderDb, CancellationToken cancellationToken = default)
     { 
-        var createdOrder = await _context.Orders.AddAsync(orderDb);
-        await _context.SaveChangesAsync();
+        var createdOrder = await _context.Orders.AddAsync(orderDb, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         return createdOrder.Entity;
     }
 }

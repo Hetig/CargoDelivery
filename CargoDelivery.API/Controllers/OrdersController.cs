@@ -20,19 +20,28 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<OrderResponseDto>> Create(OrderCreateDto orderDto)
+    public async Task<ActionResult<OrderResponseDto>> Create([FromBody] OrderCreateDto orderDto, CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+        
         var order = _mapper.Map<OrderCreateDto, Order>(orderDto);
-        var newOrder = await _orderService.AddAsync(order);
+        var newOrder = await _orderService.AddAsync(order, cancellationToken);
 
-        return Created(nameof(GetOrderById), _mapper.Map<Order, OrderResponseDto>(newOrder));
+        return Created(nameof(GetById), _mapper.Map<Order, OrderResponseDto>(newOrder));
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<OrderResponseDto>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var order = await _orderService.GetByIdAsync(id, cancellationToken);
+
+        return Ok(_mapper.Map<Order, OrderResponseDto>(order));
     }
 
     [HttpGet]
-    public async Task<ActionResult<OrderResponseDto>> GetOrderById(Guid id)
+    public async Task<ActionResult<List<OrderResponseDto>>> GetAll(CancellationToken cancellationToken)
     {
-        var order = await _orderService.GetByIdAsync(id);
-
-        return Ok(_mapper.Map<Order, OrderResponseDto>(order));
+        var orders = await _orderService.GetAllAsync(cancellationToken);
+        return Ok(_mapper.Map<List<Order>, List<OrderResponseDto>>(orders));
     }
 }
