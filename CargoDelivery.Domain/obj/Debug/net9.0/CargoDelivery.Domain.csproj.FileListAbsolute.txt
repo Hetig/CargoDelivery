@@ -1,0 +1,16 @@
+C:\Repos\CargoDelivery\CargoDelivery.Domain\bin\Debug\net9.0\CargoDelivery.Domain.deps.json
+C:\Repos\CargoDelivery\CargoDelivery.Domain\bin\Debug\net9.0\CargoDelivery.Domain.dll
+C:\Repos\CargoDelivery\CargoDelivery.Domain\bin\Debug\net9.0\CargoDelivery.Domain.pdb
+C:\Repos\CargoDelivery\CargoDelivery.Domain\bin\Debug\net9.0\CargoDelivery.Storage.dll
+C:\Repos\CargoDelivery\CargoDelivery.Domain\bin\Debug\net9.0\CargoDelivery.Storage.pdb
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.csproj.AssemblyReference.cache
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.AssemblyInfoInputs.cache
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.AssemblyInfo.cs
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.csproj.CoreCompileInputs.cache
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.sourcelink.json
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDel.FBE68B30.Up2Date
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.dll
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\refint\CargoDelivery.Domain.dll
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\CargoDelivery.Domain.pdb
+C:\Repos\CargoDelivery\CargoDelivery.Domain\obj\Debug\net9.0\ref\CargoDelivery.Domain.dll

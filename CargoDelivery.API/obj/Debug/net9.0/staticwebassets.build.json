@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "07PuU52wD9F2D5ks3qtW0mFIq6xK2Vg9ypsnh1puO6o=",
+  "Source": "CargoDelivery.API",
+  "BasePath": "_content/CargoDelivery.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

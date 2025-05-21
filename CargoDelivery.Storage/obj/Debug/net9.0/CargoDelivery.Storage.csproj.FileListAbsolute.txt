@@ -1,0 +1,15 @@
+C:\Repos\CargoDelivery\CargoDelivery.Storage\bin\Debug\net9.0\CargoDelivery.Storage.deps.json
+C:\Repos\CargoDelivery\CargoDelivery.Storage\bin\Debug\net9.0\CargoDelivery.Storage.dll
+C:\Repos\CargoDelivery\CargoDelivery.Storage\bin\Debug\net9.0\CargoDelivery.Storage.pdb
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.csproj.AssemblyReference.cache
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.AssemblyInfoInputs.cache
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.AssemblyInfo.cs
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.csproj.CoreCompileInputs.cache
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.sourcelink.json
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.dll
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\refint\CargoDelivery.Storage.dll
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.pdb
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\ref\CargoDelivery.Storage.dll
+C:\Repos\CargoDelivery\CargoDelivery.Storage\bin\Debug\net9.0\CargoDelivery.Storage.runtimeconfig.json
+C:\Repos\CargoDelivery\CargoDelivery.Storage\obj\Debug\net9.0\CargoDelivery.Storage.genruntimeconfig.cache
