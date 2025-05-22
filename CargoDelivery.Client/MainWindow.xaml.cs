@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CargoDelivery.Client.Services;
+using CargoDelivery.Client.ViewModels;
 
 namespace CargoDelivery.Client;
 
@@ -16,8 +18,11 @@ namespace CargoDelivery.Client;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    public MainViewModel ViewModel;
+    public MainWindow(IApiService apiService)
     {
+        ViewModel = new MainViewModel(apiService);
+        DataContext = ViewModel;
         InitializeComponent();
     }
 }

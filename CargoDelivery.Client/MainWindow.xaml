@@ -3,10 +3,56 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CargoDelivery.Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Управление заявками на доставку" Height="600" Width="800">
+    <Window.Resources>
+    </Window.Resources>
+    
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ToolBar Grid.Row="0">
+            <Button Content="Обновить" Command="{Binding LoadOrdersCommand}"/>
+            <Button Content="Добавить" Command="{Binding AddOrderCommand}"/>
+            <Button Content="Редактировать" Command="{Binding EditOrderCommand}"/>
+            <Button Content="Удалить" Command="{Binding DeleteOrderCommand}"/>
+            <Separator/>
+            <Button Content="Передать курьеру" Command="{Binding AssignToCourierCommand}"/>
+            <Button Content="Завершить" Command="{Binding CompleteOrderCommand}"/>
+            <Button Content="Отменить" Command="{Binding CancelOrderCommand}"/>
+        </ToolBar>
+
+        <TextBox Grid.Row="1" Margin="5" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+
+        <DataGrid Grid.Row="2" Margin="5" ItemsSource="{Binding Orders}" 
+                  SelectedItem="{Binding SelectedOrder}" AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                <DataGridTextColumn Header="Клиент" Binding="{Binding Client.Name}" Width="*"/>
+                <DataGridTextColumn Header="Груз" Binding="{Binding Cargo.Name}" Width="*"/>
+                <DataGridTextColumn Header="Адрес забора" Binding="{Binding TakeAddress}" Width="*"/>
+                <DataGridTextColumn Header="Время забора" Binding="{Binding TakeDateTime}" Width="Auto"/>
+                <DataGridTextColumn Header="Адрес доставки" Binding="{Binding DestinationAddress}" Width="*"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="Auto">
+                    
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Курьер" Binding="{Binding Courier.Name}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StatusBar Grid.Row="3">
+            <StatusBarItem>
+                <TextBlock Text="{Binding Orders.Count, StringFormat='Всего заявок: {0}'}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <ProgressBar Width="100" Height="16" IsIndeterminate="{Binding IsBusy}" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

@@ -76,7 +76,7 @@ public class OrdersController : ControllerBase
     }
     
     [HttpPost("{orderId}/assign/{courierId}")]
-    public async Task<IActionResult> AssignToCourier([FromRoute] Guid orderId, [FromRoute] Guid courierId, CancellationToken cancellationToken)
+    public async Task<ActionResult> AssignToCourier([FromRoute] Guid orderId, [FromRoute] Guid courierId, CancellationToken cancellationToken)
     {
         var result = await _orderService.AssignToCourierAsync(courierId,
                                                                     orderId, 
@@ -86,7 +86,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost("inprocess/{orderId}")]
-    public async Task<IActionResult> SetInProcessStatus([FromRoute] Guid orderId, CancellationToken cancellationToken)
+    public async Task<ActionResult> SetInProcessStatus([FromRoute] Guid orderId, CancellationToken cancellationToken)
     {
         var result = await _orderService.SetInProcessStatusAsync(orderId, cancellationToken);
         
@@ -95,7 +95,7 @@ public class OrdersController : ControllerBase
     }
     
     [HttpPost("done/{orderId}")]
-    public async Task<IActionResult> SetDoneStatus([FromRoute] Guid orderId, CancellationToken cancellationToken)
+    public async Task<ActionResult> SetDoneStatus([FromRoute] Guid orderId, CancellationToken cancellationToken)
     {
         var result = await _orderService.SetDoneStatusAsync(orderId, cancellationToken);
         
@@ -104,7 +104,7 @@ public class OrdersController : ControllerBase
     }
     
     [HttpPost("cancel/{orderId}")]
-    public async Task<IActionResult> SetCancelStatus([FromRoute] Guid orderId, [FromQuery] string comment, CancellationToken cancellationToken)
+    public async Task<ActionResult> SetCancelStatus([FromRoute] Guid orderId, [FromQuery] string comment, CancellationToken cancellationToken)
     {
         var result = await _orderService.SetCancelStatusAsync(orderId, comment, cancellationToken);
         
@@ -113,7 +113,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpDelete("delete/{orderId}")]
-    public async Task<IActionResult> Delete([FromRoute] Guid orderId, CancellationToken cancellationToken)
+    public async Task<ActionResult> Delete([FromRoute] Guid orderId, CancellationToken cancellationToken)
     {
         var result = await _orderService.DeleteAsync(orderId, cancellationToken);
         

@@ -16,7 +16,7 @@ public class OrderRepository : IOrderRepository
     
     public async Task<List<OrderDb>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Orders
+        return await _context.Orders.Where(ord => ord.Deleted != true)
                                 .AsNoTracking()
                                 .Include(ord => ord.Cargo)   
                                 .Include(ord => ord.Client)  
@@ -35,7 +35,8 @@ public class OrderRepository : IOrderRepository
                                     ord.Courier.Name.ToLower().Contains(query.ToLower()) ||
                                     ord.DestinationAddress.ToLower().Contains(query.ToLower()) ||
                                     ord.TakeAddress.ToLower().Contains(query.ToLower()) ||
-                                    ord.DestinationAddress.ToLower().Contains(query.ToLower()))
+                                    ord.DestinationAddress.ToLower().Contains(query.ToLower()) &&
+                                    ord.Deleted != true)
                                 .AsNoTracking()
                                 .Include(ord => ord.Cargo)   
                                 .Include(ord => ord.Client)  
@@ -45,7 +46,8 @@ public class OrderRepository : IOrderRepository
 
     public async Task<OrderDb> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Orders.Include(ord => ord.Cargo)
+        return await _context.Orders.Where(ord => ord.Deleted != true)
+                                    .Include(ord => ord.Cargo)
                                     .Include(ord => ord.Client)
                                     .Include(ord => ord.Courier)
                                         .FirstOrDefaultAsync(ord => ord.Id == id, cancellationToken);
