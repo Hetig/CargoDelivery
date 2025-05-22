@@ -30,3 +30,6 @@ API для Службы доставки
 1. Запустить Docker Desktop
 2. Поднять Docker контейнер с PostgreSQL используя команду в терминале (docker compose up -d)
 3. Запустить WPF клиент после запуска сервера
+4. Проверить строку с baseUri в клиентском WPF приложении (см. скриншот ниже)
+   ![image](https://github.com/user-attachments/assets/2e292e29-ceae-4e75-aeb3-6992f8022959)
+
