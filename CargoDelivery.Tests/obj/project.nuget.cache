@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "X2cpXPqiJSo=",
+  "dgSpecHash": "CaXsIdbFN+0=",
   "success": true,
-  "projectFilePath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Tests\\CargoDelivery.Tests.csproj",
+  "projectFilePath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Tests\\CargoDelivery.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",

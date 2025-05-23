@@ -11,7 +11,7 @@ namespace CargoDelivery.Client.Services;
 public class ApiService : IApiService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _baseUrl = "http://localhost:5074/api/v1/";
+    private readonly string _baseUrl = "http://localhost:8080/api/v1/";
 
     public ApiService(HttpClient httpClient)
     {

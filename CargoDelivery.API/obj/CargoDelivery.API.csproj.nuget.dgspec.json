@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repos\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj": {}
+    "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj": {}
   },
   "projects": {
-    "C:\\Repos\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj": {
+    "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repos\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj",
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj",
         "projectName": "CargoDelivery.API",
-        "projectPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.API\\CargoDelivery.API.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.API\\obj\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,11 +32,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Repos\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj": {
-                "projectPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj"
+              "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj"
               },
-              "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj": {
-                "projectPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj"
+              "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj"
               }
             }
           }
@@ -99,14 +99,14 @@
         }
       }
     },
-    "C:\\Repos\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj": {
+    "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repos\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj",
         "projectName": "CargoDelivery.Domain",
-        "projectPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Domain\\CargoDelivery.Domain.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Domain\\obj\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -127,8 +127,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj": {
-                "projectPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj"
+              "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj"
               }
             }
           }
@@ -174,14 +174,14 @@
         }
       }
     },
-    "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj": {
+    "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj",
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj",
         "projectName": "CargoDelivery.Storage",
-        "projectPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\CargoDelivery.Storage.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Repos\\CargoDelivery\\CargoDelivery.Storage\\obj\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\CargoDelivery\\CargoDelivery.Storage\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
