@@ -3,6 +3,9 @@ using CargoDelivery.API.ValidationAttributes;
 
 namespace CargoDelivery.API.Dtos;
 
+/// <summary>
+/// Модель создания заказа
+/// </summary>
 public class OrderCreateDto
 {
     [Required]
