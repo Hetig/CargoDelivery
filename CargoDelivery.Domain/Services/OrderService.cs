@@ -40,6 +40,7 @@ public class OrderService : IOrderService
     public async Task<Order> AddAsync(Order order, CancellationToken cancellationToken)
     {
         var createdOrder = await _orderRepository.AddAsync(_mapper.Map<OrderDb>(order), cancellationToken);
+        
         return _mapper.Map<Order>(createdOrder);
     }
     

@@ -28,13 +28,17 @@ namespace CargoDelivery.Storage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cargos");
+                    b.ToTable("Cargos", (string)null);
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.ClientDb", b =>
@@ -49,7 +53,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.CourierDb", b =>
@@ -64,7 +68,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Couriers");
+                    b.ToTable("Couriers", (string)null);
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.OrderDb", b =>
@@ -110,38 +114,50 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CargoId");
+                    b.HasIndex("CargoId")
+                        .IsUnique();
 
                     b.HasIndex("ClientId");
 
                     b.HasIndex("CourierId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.OrderDb", b =>
                 {
                     b.HasOne("CargoDelivery.Storage.Entities.CargoDb", "Cargo")
-                        .WithMany()
-                        .HasForeignKey("CargoId")
+                        .WithOne()
+                        .HasForeignKey("CargoDelivery.Storage.Entities.OrderDb", "CargoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CargoDelivery.Storage.Entities.ClientDb", "Client")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CargoDelivery.Storage.Entities.CourierDb", "Courier")
-                        .WithMany()
-                        .HasForeignKey("CourierId");
+                        .WithMany("Orders")
+                        .HasForeignKey("CourierId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Cargo");
 
                     b.Navigation("Client");
 
                     b.Navigation("Courier");
+                });
+
+            modelBuilder.Entity("CargoDelivery.Storage.Entities.ClientDb", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CargoDelivery.Storage.Entities.CourierDb", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

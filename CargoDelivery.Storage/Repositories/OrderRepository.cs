@@ -35,7 +35,8 @@ public class OrderRepository : IOrderRepository
                                     ord.Courier.Name.ToLower().Contains(query.ToLower()) ||
                                     ord.DestinationAddress.ToLower().Contains(query.ToLower()) ||
                                     ord.TakeAddress.ToLower().Contains(query.ToLower()) ||
-                                    ord.DestinationAddress.ToLower().Contains(query.ToLower()) &&
+                                    ord.DestinationAddress.ToLower().Contains(query.ToLower()) ||
+                                    ord.CreateDateTime.ToString().ToLower().Contains(query.ToLower()) &&
                                     ord.Deleted != true)
                                 .AsNoTracking()
                                 .Include(ord => ord.Cargo)   

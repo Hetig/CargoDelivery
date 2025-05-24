@@ -2,8 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CargoDelivery.API.Dtos;
 
-public class CargoDto
+public class ClientQueryDto
 {
+    [Required]
     public Guid Id { get; init; }
     [Required]
     [StringLength(150, MinimumLength = 3)] 

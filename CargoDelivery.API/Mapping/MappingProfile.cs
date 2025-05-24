@@ -13,8 +13,13 @@ public class MappingProfile : Profile
         CreateMap<OrderUpdateDto, Order>().ReverseMap();
         CreateMap<OrderResponseDto, Order>().ReverseMap();
         
-        CreateMap<CargoDto, Cargo>().ReverseMap();
-        CreateMap<ClientDto, Client>().ReverseMap();
-        CreateMap<CourierDto, Courier>().ReverseMap();
+        CreateMap<CargoCreateDto, Cargo>().ReverseMap();
+        CreateMap<CargoResponseDto, Cargo>().ReverseMap();
+        
+        CreateMap<ClientQueryDto, Client>().ReverseMap();
+        CreateMap<ClientResponseDto, Client>().ReverseMap();
+        
+        CreateMap<CourierQueryDto, Courier>().ReverseMap();
+        CreateMap<CourierResponseDto, Courier>().ReverseMap();
     }
 }

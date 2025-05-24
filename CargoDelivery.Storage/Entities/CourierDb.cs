@@ -4,4 +4,5 @@ public class CourierDb
 {
     public Guid Id { get; init; }
     public string Name { get; init; }
+    public List<OrderDb> Orders { get; init; }
 }
