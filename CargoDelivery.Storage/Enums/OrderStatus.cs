@@ -2,8 +2,8 @@ namespace CargoDelivery.Storage.Enums;
 
 public enum OrderStatus
 {
-    New = 0,
-    InProcess = 1,
-    Done = 2,
-    Cancelled = 3,
+    New = 1,
+    InProcess = 2,
+    Done = 3,
+    Cancelled = 4,
 }

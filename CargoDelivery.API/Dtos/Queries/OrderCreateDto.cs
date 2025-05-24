@@ -11,7 +11,7 @@ public class OrderCreateDto : IValidatableObject
     [Required]
     public Guid ClientId { get; init; }
     [Required]
-    public CargoCreateDto CargoCreate { get; init; }
+    public CargoCreateDto Cargo { get; init; }
     [Required]
     [StringLength(150, MinimumLength = 3)] 
     public string TakeAddress { get; init; }

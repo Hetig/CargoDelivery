@@ -6,7 +6,7 @@ public class OrderResponseDto
 {
     public Guid Id { get; init; }
     public DateTime CreateDateTime { get; init; }
-    public OrderStatus Status { get; init; }
+    public OrderStatusDb StatusDb { get; init; }
     public ClientResponseDto Client { get; init; }
     public CargoResponseDto Cargo { get; init; }
     public string TakeAddress { get; init; }

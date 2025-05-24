@@ -3,6 +3,7 @@ using System;
 using CargoDelivery.Storage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CargoDelivery.Storage.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250524182615_AddDefaultCouriers")]
+    partial class AddDefaultCouriers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,23 +57,6 @@ namespace CargoDelivery.Storage.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("7c9a412f-409e-47e1-b2c0-93961f6f4853"),
-                            Name = "Client1"
-                        },
-                        new
-                        {
-                            Id = new Guid("c9cd28cc-b080-4509-96c8-145049f7908c"),
-                            Name = "Client2"
-                        },
-                        new
-                        {
-                            Id = new Guid("6b0dd6ef-fa49-4b24-8471-b7b74a10c5e6"),
-                            Name = "Client3"
-                        });
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.CourierDb", b =>
@@ -136,7 +122,7 @@ namespace CargoDelivery.Storage.Migrations
                     b.Property<DateTime>("DestinationDateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<string>("TakeAddress")
@@ -155,54 +141,13 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasIndex("CourierId");
 
-                    b.HasIndex("StatusId");
-
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("CargoDelivery.Storage.Enums.OrderStatusDb", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "New"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "InProcess"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Done"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Cancelled"
-                        });
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.OrderDb", b =>
                 {
                     b.HasOne("CargoDelivery.Storage.Entities.CargoDb", "Cargo")
-                        .WithOne("Order")
+                        .WithOne()
                         .HasForeignKey("CargoDelivery.Storage.Entities.OrderDb", "CargoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -218,25 +163,11 @@ namespace CargoDelivery.Storage.Migrations
                         .HasForeignKey("CourierId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("CargoDelivery.Storage.Enums.OrderStatusDb", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Cargo");
 
                     b.Navigation("Client");
 
                     b.Navigation("Courier");
-
-                    b.Navigation("Status");
-                });
-
-            modelBuilder.Entity("CargoDelivery.Storage.Entities.CargoDb", b =>
-                {
-                    b.Navigation("Order")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.ClientDb", b =>

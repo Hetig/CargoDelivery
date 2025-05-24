@@ -36,7 +36,8 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<OrderResponseDto>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var order = await _orderService.GetByIdAsync(id, cancellationToken);
-
+        if (order is null) return NotFound($"Client with id {id} not found");
+        
         return Ok(_mapper.Map<Order, OrderResponseDto>(order));
     }
 
@@ -53,7 +54,7 @@ public class OrdersController : ControllerBase
         return Ok(await _orderService.SearchAsync(query, cancellationToken));
     }
     
-    [HttpPut("update")]
+    [HttpPatch("update")]
     public async Task<IActionResult> Update([FromBody] OrderUpdateDto orderDto, CancellationToken cancellationToken)
     {
         try
@@ -63,11 +64,8 @@ public class OrdersController : ControllerBase
             var order = _mapper.Map<OrderUpdateDto, Order>(orderDto);
             var result = await _orderService.UpdateAsync(order, cancellationToken);
             
-            if (!result)
-            {
-                return NotFound();
-            }
-            return NoContent();
+            if (!result) return NotFound();
+            return Ok(order);
         }
         catch (Exception ex)
         {

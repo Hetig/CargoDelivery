@@ -47,11 +47,15 @@ public class OrderService : IOrderService
     public async Task<bool> UpdateAsync(Order order, CancellationToken cancellationToken)
     {
         var orderToUpdate = await _orderRepository.GetByIdAsync(order.Id, cancellationToken);
-        if (orderToUpdate?.Status != OrderStatus.New)
+        if (orderToUpdate == null || orderToUpdate?.Status != OrderStatus.New)
             return false;
         
-        var createdOrder = await _orderRepository.UpdateAsync(_mapper.Map(order, orderToUpdate), cancellationToken);
-        return true;
+        orderToUpdate.DestinationAddress = order.DestinationAddress;
+        orderToUpdate.DestinationDateTime = order.DestinationDateTime;
+        orderToUpdate.TakeAddress = order.TakeAddress;
+        orderToUpdate.TakeDateTime = order.TakeDateTime;
+        
+        return await _orderRepository.UpdateAsync(orderToUpdate, cancellationToken);
     }
 
     public async Task<bool> AssignToCourierAsync(Guid courierId, Guid orderId, CancellationToken cancellationToken)
@@ -67,6 +71,8 @@ public class OrderService : IOrderService
     public async Task<bool> SetInProcessStatusAsync(Guid orderId, CancellationToken cancellationToken)
     {
         var orderInProcess = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        if(orderInProcess == null) return false;
+        
         orderInProcess.Status = OrderStatus.InProcess;
         
         return await _orderRepository.UpdateAsync(orderInProcess, cancellationToken);
@@ -75,6 +81,8 @@ public class OrderService : IOrderService
     public async Task<bool> SetDoneStatusAsync(Guid orderId, CancellationToken cancellationToken)
     {
         var orderToDone = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        if(orderToDone == null) return false;
+        
         orderToDone.Status = OrderStatus.Done;
         
         return await _orderRepository.UpdateAsync(orderToDone, cancellationToken);
@@ -83,6 +91,8 @@ public class OrderService : IOrderService
     public async Task<bool> SetCancelStatusAsync(Guid orderId, string comment, CancellationToken cancellationToken)
     {
         var orderToCancel = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+        if(orderToCancel == null) return false;
+        
         orderToCancel.Status = OrderStatus.Cancelled;
         orderToCancel.CancelledComment = comment;
         

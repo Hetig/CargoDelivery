@@ -2,7 +2,7 @@ namespace CargoDelivery.Storage.Entities;
 
 public class CourierDb
 {
-    public Guid Id { get; init; }
-    public string Name { get; init; }
-    public List<OrderDb> Orders { get; init; }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public List<OrderDb> Orders { get; set; }
 }

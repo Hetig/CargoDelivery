@@ -185,7 +185,7 @@ namespace CargoDelivery.Tests
             var result = await _orderService.SetInProcessStatusAsync(orderId, _cancellationToken);
 
             Assert.True(result);
-            Assert.Equal(OrderStatus.InProcess, orderDb.Status);
+            Assert.Equal(OrderStatus.InProcess, (OrderStatus)orderDb.Status.Id);
             _orderRepositoryMock.Verify(x => x.UpdateAsync(orderDb, _cancellationToken), Times.Once);
         }
 
@@ -204,7 +204,7 @@ namespace CargoDelivery.Tests
             var result = await _orderService.SetDoneStatusAsync(orderId, _cancellationToken);
 
             Assert.True(result);
-            Assert.Equal(OrderStatus.Done, orderDb.Status);
+            Assert.Equal(OrderStatus.Done, (OrderStatus)orderDb.Status.Id);
             _orderRepositoryMock.Verify(x => x.UpdateAsync(orderDb, _cancellationToken), Times.Once);
         }
 
@@ -224,7 +224,7 @@ namespace CargoDelivery.Tests
             var result = await _orderService.SetCancelStatusAsync(orderId, comment, _cancellationToken);
 
             Assert.True(result);
-            Assert.Equal(OrderStatus.Cancelled, orderDb.Status);
+            Assert.Equal(OrderStatus.Cancelled, (OrderStatus)orderDb.Status);
             Assert.Equal(comment, orderDb.CancelledComment);
             _orderRepositoryMock.Verify(x => x.UpdateAsync(orderDb, _cancellationToken), Times.Once);
         }

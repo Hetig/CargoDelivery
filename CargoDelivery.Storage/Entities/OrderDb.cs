@@ -4,19 +4,19 @@ namespace CargoDelivery.Storage.Entities;
 
 public class OrderDb
 {
-    public Guid Id { get; init; }
-    public DateTime CreateDateTime { get; init; }
-    public OrderStatus Status { get; set; }
-    public ClientDb Client { get; init; }
-    public Guid ClientId { get; init; }
-    public CargoDb Cargo { get; init; }
-    public Guid CargoId { get; init; }
-    public string TakeAddress { get; init; }
-    public DateTime TakeDateTime { get; init; }
+    public Guid Id { get; set; }
+    public DateTime CreateDateTime { get; set; }
+    public OrderStatusDb Status { get; set; }
+    public ClientDb Client { get; set; }
+    public Guid ClientId { get; set; }
+    public CargoDb Cargo { get; set; }
+    public Guid CargoId { get; set; }
+    public string TakeAddress { get; set; }
+    public DateTime TakeDateTime { get; set; }
     public CourierDb? Courier { get; set; }
-    public Guid? CourierId { get; init; }
-    public string DestinationAddress { get; init; }
-    public DateTime DestinationDateTime { get; init; }
+    public Guid? CourierId { get; set; }
+    public string DestinationAddress { get; set; }
+    public DateTime DestinationDateTime { get; set; }
     public bool Deleted { get; set; }
     public string? CancelledComment { get; set; }
 }

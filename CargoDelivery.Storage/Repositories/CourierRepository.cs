@@ -17,4 +17,10 @@ public class CourierRepository : ICourierRepository
     {
         return await _dbContext.Couriers.FirstOrDefaultAsync(courier => courier.Id == id, cancellationToken);
     }
+
+    public async Task<List<CourierDb>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _dbContext.Couriers.AsNoTracking()
+                                        .ToListAsync(cancellationToken);
+    }
 }
