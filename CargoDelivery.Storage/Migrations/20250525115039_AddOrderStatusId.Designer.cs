@@ -3,6 +3,7 @@ using System;
 using CargoDelivery.Storage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CargoDelivery.Storage.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250525115039_AddOrderStatusId")]
+    partial class AddOrderStatusId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cargos", (string)null);
+                    b.ToTable("Cargos");
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Entities.ClientDb", b =>
@@ -53,7 +56,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
 
                     b.HasData(
                         new
@@ -85,7 +88,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Couriers", (string)null);
+                    b.ToTable("Couriers");
 
                     b.HasData(
                         new
@@ -157,7 +160,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("CargoDelivery.Storage.Enums.OrderStatusDb", b =>
@@ -174,7 +177,7 @@ namespace CargoDelivery.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatuses", (string)null);
+                    b.ToTable("OrderStatuses");
 
                     b.HasData(
                         new

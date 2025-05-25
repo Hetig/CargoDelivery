@@ -7,6 +7,7 @@ public class Order
     public Guid Id { get; init; }
     public DateTime CreateDateTime { get; init; }
     public OrderStatus Status { get; init; }
+    public int StatusId { get; init; }
     public Client Client { get; init; }
     public Guid ClientId { get; init; }
     public Cargo Cargo { get; init; }
@@ -23,6 +24,6 @@ public class Order
     public Order()
     {
         CreateDateTime = DateTime.UtcNow;
-        Status = OrderStatus.New;
+        StatusId = (int)OrderStatus.New;
     }
 }

@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\CargoDelivery.API\CargoDelivery.API.csproj" />
       <ProjectReference Include="..\CargoDelivery.Domain\CargoDelivery.Domain.csproj" />
     </ItemGroup>
 

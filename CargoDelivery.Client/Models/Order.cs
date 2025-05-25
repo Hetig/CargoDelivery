@@ -15,14 +15,14 @@ public class Order : INotifyPropertyChanged
     private DateTime _takeDateTime;
     private string _destinationAddress;
     private DateTime _destinationDateTime;
-    private OrderStatusDb _statusDb;
+    private OrderStatus _statusDb;
     private Courier _courier;
     private string _cancelComment;
     
     
     public Guid Id { get => _id; set { _id = value; OnPropertyChanged(); } }
     public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged(); } }
-    public OrderStatusDb StatusDb { get => _statusDb; set { _statusDb = value; OnPropertyChanged(); } }
+    public OrderStatus Status { get => _statusDb; set { _statusDb = value; OnPropertyChanged(); } }
     public Domain.Models.Client Client { get => _client; set { _client = value; OnPropertyChanged(); } }
     public Cargo Cargo { get => _cargo; set { _cargo = value; OnPropertyChanged(); } }
     public string TakeAddress { get => _pickupAddress; set { _pickupAddress = value; OnPropertyChanged(); } }

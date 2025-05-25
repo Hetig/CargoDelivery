@@ -21,5 +21,7 @@ public class MappingProfile : Profile
         
         CreateMap<CourierQueryDto, Courier>().ReverseMap();
         CreateMap<CourierResponseDto, Courier>().ReverseMap();
+
+        CreateMap<PaginationRequestDto, PaginationRequest>().ReverseMap();
     }
 }

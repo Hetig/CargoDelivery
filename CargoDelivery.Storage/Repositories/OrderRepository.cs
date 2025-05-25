@@ -14,21 +14,33 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
     
-    public async Task<List<OrderDb>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<(List<OrderDb> Data, int TotalCount)> GetPaginatedAsync(
+        int pageNumber,
+        int pageSize,
+        CancellationToken cancellationToken)
     {
-        return await _context.Orders.Where(ord => ord.Deleted != true)
-                                .AsNoTracking()
-                                .Include(ord => ord.Cargo)   
-                                .Include(ord => ord.Client)  
-                                .Include(ord => ord.Courier)
-                                .ToListAsync(cancellationToken);
+        var totalCount = await _context.Orders.CountAsync(cancellationToken);
+
+        var data = await _context.Orders
+            .AsNoTracking()
+            .Include(ord => ord.Cargo)   
+            .Include(ord => ord.Client)  
+            .Include(ord => ord.Courier)
+            .Include(ord => ord.Status)
+            .OrderBy(o => o.CreateDateTime)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (data, totalCount);
     }
-    public async Task<List<OrderDb>> SearchAsync(string query, CancellationToken cancellationToken = default)
+    
+    public async Task<(List<OrderDb> Data, int TotalCount)> SearchAsync(string query, int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(query))
-            return await GetAllAsync();
+            return await GetPaginatedAsync(pageNumber, pageSize, cancellationToken);
         
-        return await _context.Orders
+        var data = await _context.Orders
                                 .Where(ord => 
                                     ord.Client.Name.ToLower().Contains(query.ToLower()) ||
                                     ord.Cargo.Name.ToLower().Contains(query.ToLower()) ||
@@ -36,13 +48,17 @@ public class OrderRepository : IOrderRepository
                                     ord.DestinationAddress.ToLower().Contains(query.ToLower()) ||
                                     ord.TakeAddress.ToLower().Contains(query.ToLower()) ||
                                     ord.DestinationAddress.ToLower().Contains(query.ToLower()) ||
-                                    ord.CreateDateTime.ToString().ToLower().Contains(query.ToLower()) &&
-                                    ord.Deleted != true)
+                                    ord.CreateDateTime.ToString().ToLower().Contains(query.ToLower()) ||
+                                    ord.TakeDateTime.ToString().ToLower().Contains(query.ToLower()) ||
+                                    ord.DestinationDateTime.ToString().ToLower().Contains(query.ToLower()))
                                 .AsNoTracking()
                                 .Include(ord => ord.Cargo)   
                                 .Include(ord => ord.Client)  
                                 .Include(ord => ord.Courier)
+                                .Include(ord => ord.Status)
                                 .ToListAsync(cancellationToken);
+        
+        return (data, data.Count);
     }
 
     public async Task<OrderDb> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -51,6 +67,7 @@ public class OrderRepository : IOrderRepository
                                     .Include(ord => ord.Cargo)
                                     .Include(ord => ord.Client)
                                     .Include(ord => ord.Courier)
+                                    .Include(ord => ord.Status)
                                         .FirstOrDefaultAsync(ord => ord.Id == id, cancellationToken);
     }
 

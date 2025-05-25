@@ -71,21 +71,21 @@ public class MainViewModel : INotifyPropertyChanged
     private async Task AssignToCourier()
     {
         if (SelectedOrder == null) return;
-        SelectedOrder.StatusDb = OrderStatus.InProcess;
+        SelectedOrder.Status = OrderStatus.InProcess;
         await _apiService.UpdateOrderAsync(SelectedOrder);
     }
 
     private async Task CompleteOrder()
     {
         if (SelectedOrder == null) return;
-        SelectedOrder.StatusDb = OrderStatus.Done;
+        SelectedOrder.Status = OrderStatus.Done;
         await _apiService.OrderDoneAsync(SelectedOrder);
     }
 
     private async Task CancelOrder()
     {
         if (SelectedOrder == null) return;
-        SelectedOrder.StatusDb = OrderStatus.Cancelled;
+        SelectedOrder.Status = OrderStatus.Cancelled;
         await _apiService.OrderCancelAsync(SelectedOrder);
     }
 

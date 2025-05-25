@@ -61,6 +61,13 @@ public class DatabaseContext : DbContext
             .WithOne(cargo => cargo.Order) 
             .HasForeignKey<OrderDb>(ord => ord.CargoId) 
             .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<OrderDb>()
+            .HasOne(ord => ord.Status)
+            .WithMany(status => status.Orders)
+            .HasForeignKey(ord => ord.StatusId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

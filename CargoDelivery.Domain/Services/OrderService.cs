@@ -12,23 +12,55 @@ public class OrderService : IOrderService
     private readonly IMapper _mapper;
     private readonly IOrderRepository _orderRepository;
     private readonly ICourierRepository _courierRepository;
+    private readonly IClientService _clientService;
 
-    public OrderService(IMapper mapper, IOrderRepository orderRepository, ICourierRepository courierRepository)
+    public OrderService(IMapper mapper, IOrderRepository orderRepository, ICourierRepository courierRepository, IClientService clientService)
     {
         _mapper = mapper;
         _orderRepository = orderRepository;
         _courierRepository = courierRepository;
+        _clientService = clientService;
     }
     
-    public async Task<List<Order>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<PaginatedResponse<Order>> GetAllPaginatedAsync(
+        PaginationRequest request,
+        CancellationToken cancellationToken)
     {
-        var orders = await _orderRepository.GetAllAsync(cancellationToken);
-        return _mapper.Map<List<Order>>(orders);
+        var (data, totalCount) = await _orderRepository.GetPaginatedAsync(
+            request.PageNumber,
+            request.PageSize,
+            cancellationToken);
+
+        var filteredData = data.Where(o => !o.Deleted).ToList();
+
+        return new PaginatedResponse<Order>
+        {
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount,
+            Data = _mapper.Map<List<Order>>(filteredData)
+        };
     }
-    public async Task<List<Order>> SearchAsync(string query, CancellationToken cancellationToken)
+    public async Task<PaginatedResponse<Order>> SearchPaginatedAsync(
+        string query, 
+        PaginationRequest request,
+        CancellationToken cancellationToken)
     {
-        var orders = await _orderRepository.SearchAsync(query, cancellationToken);
-        return _mapper.Map<List<Order>>(orders);
+        var (data, totalCount) = await _orderRepository.SearchAsync(
+            query,
+            request.PageNumber,
+            request.PageSize,
+            cancellationToken);
+        
+        var filteredData = data.Where(o => !o.Deleted).ToList();
+        
+        return new PaginatedResponse<Order>
+        {
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount,
+            Data = _mapper.Map<List<Order>>(filteredData)
+        };
     }
 
     public async Task<Order> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -39,6 +71,9 @@ public class OrderService : IOrderService
 
     public async Task<Order> AddAsync(Order order, CancellationToken cancellationToken)
     {
+        var selectedClient = await _clientService.GetByIdAsync(order.ClientId, cancellationToken);
+        if(selectedClient == null) return null;
+        
         var createdOrder = await _orderRepository.AddAsync(_mapper.Map<OrderDb>(order), cancellationToken);
         
         return _mapper.Map<Order>(createdOrder);
@@ -47,7 +82,7 @@ public class OrderService : IOrderService
     public async Task<bool> UpdateAsync(Order order, CancellationToken cancellationToken)
     {
         var orderToUpdate = await _orderRepository.GetByIdAsync(order.Id, cancellationToken);
-        if (orderToUpdate == null || orderToUpdate?.Status != OrderStatus.New)
+        if (orderToUpdate == null || orderToUpdate?.StatusId != (int)OrderStatus.New)
             return false;
         
         orderToUpdate.DestinationAddress = order.DestinationAddress;
@@ -73,7 +108,7 @@ public class OrderService : IOrderService
         var orderInProcess = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
         if(orderInProcess == null) return false;
         
-        orderInProcess.Status = OrderStatus.InProcess;
+        orderInProcess.StatusId = (int)OrderStatus.InProcess;
         
         return await _orderRepository.UpdateAsync(orderInProcess, cancellationToken);
     }
@@ -83,7 +118,7 @@ public class OrderService : IOrderService
         var orderToDone = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
         if(orderToDone == null) return false;
         
-        orderToDone.Status = OrderStatus.Done;
+        orderToDone.StatusId = (int)OrderStatus.Done;
         
         return await _orderRepository.UpdateAsync(orderToDone, cancellationToken);
     }
@@ -93,7 +128,7 @@ public class OrderService : IOrderService
         var orderToCancel = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
         if(orderToCancel == null) return false;
         
-        orderToCancel.Status = OrderStatus.Cancelled;
+        orderToCancel.StatusId = (int)OrderStatus.Cancelled;
         orderToCancel.CancelledComment = comment;
         
         return await _orderRepository.UpdateAsync(orderToCancel, cancellationToken);
