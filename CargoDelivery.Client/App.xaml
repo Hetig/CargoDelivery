@@ -1,8 +1,17 @@
 ﻿<Application x:Class="CargoDelivery.Client.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CargoDelivery.Client">
+             xmlns:local="clr-namespace:CargoDelivery.Client"
+             xmlns:vm="clr-namespace:CargoDelivery.Client.ViewModels"
+             xmlns:views="clr-namespace:CargoDelivery.Client.Views">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            
+            <DataTemplate DataType="{x:Type vm:OrdersViewModel}">
+                <views:Orders/>
+            </DataTemplate>
+            
+            
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

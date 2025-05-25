@@ -18,11 +18,8 @@ namespace CargoDelivery.Client;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainViewModel ViewModel;
-    public MainWindow(IApiService apiService)
+    public MainWindow()
     {
-        ViewModel = new MainViewModel(apiService);
-        DataContext = ViewModel;
         InitializeComponent();
     }
 }
