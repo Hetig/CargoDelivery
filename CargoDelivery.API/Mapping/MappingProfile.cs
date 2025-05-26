@@ -18,9 +18,11 @@ public class MappingProfile : Profile
         
         CreateMap<ClientQueryDto, Client>().ReverseMap();
         CreateMap<ClientResponseDto, Client>().ReverseMap();
+        CreateMap<ClientCreateDto, Client>().ReverseMap();
         
         CreateMap<CourierQueryDto, Courier>().ReverseMap();
         CreateMap<CourierResponseDto, Courier>().ReverseMap();
+        CreateMap<CourierCreateDto, Courier>().ReverseMap();
 
         CreateMap<PaginationRequestDto, PaginationRequest>().ReverseMap();
     }

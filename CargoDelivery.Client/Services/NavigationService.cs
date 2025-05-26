@@ -6,7 +6,7 @@ public class NavigationService : INavigationService
 {
     private readonly Func<Type, ViewModelBase> _viewModelFactory;
     private ViewModelBase _currentView;
-    
+
     public ViewModelBase CurrentView
     {
         get => _currentView;
@@ -16,19 +16,19 @@ public class NavigationService : INavigationService
             ViewChanged?.Invoke();
         }
     }
-    
-    public event Action? ViewChanged;
-    
+
+    public event Action ViewChanged;
+
     public NavigationService(Func<Type, ViewModelBase> viewModelFactory)
     {
         _viewModelFactory = viewModelFactory;
     }
-    
-    public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
+
+    public void NavigateTo<T>() where T : ViewModelBase
     {
-        CurrentView = _viewModelFactory(typeof(TViewModel));
+        CurrentView = _viewModelFactory(typeof(T));
     }
-    
+
     public void NavigateTo(ViewModelBase viewModel)
     {
         CurrentView = viewModel;

@@ -6,8 +6,7 @@ public class OrderDb
 {
     public Guid Id { get; set; }
     public DateTime CreateDateTime { get; set; }
-    public OrderStatusDb Status { get; set; }
-    public int StatusId { get; set; }
+    public OrderStatus Status { get; set; }
     public ClientDb Client { get; set; }
     public Guid ClientId { get; set; }
     public CargoDb Cargo { get; set; }

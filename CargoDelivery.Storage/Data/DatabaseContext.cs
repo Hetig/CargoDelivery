@@ -11,7 +11,6 @@ public class DatabaseContext : DbContext
     public DbSet<CargoDb> Cargos => Set<CargoDb>();
     public DbSet<ClientDb> Clients => Set<ClientDb>();
     public DbSet<CourierDb> Couriers => Set<CourierDb>();
-    public DbSet<OrderStatusDb> OrderStatuses => Set<OrderStatusDb>();
     
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
@@ -20,16 +19,6 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        var statuses = Enum.GetValues(typeof(OrderStatus))
-            .Cast<OrderStatus>()
-            .Select(e => new OrderStatusDb 
-            { 
-                Id = (int)e,
-                Name = e.ToString() 
-            });
-    
-        modelBuilder.Entity<OrderStatusDb>().HasData(statuses);
         
         modelBuilder.Entity<CourierDb>().HasData(
             new CourierDb { Id = Guid.Parse("9BAB18DF-C059-414B-9E8C-7E3825C9EB28"), Name = "Courier1" },
@@ -60,13 +49,6 @@ public class DatabaseContext : DbContext
             .HasOne(ord => ord.Cargo)
             .WithOne(cargo => cargo.Order) 
             .HasForeignKey<OrderDb>(ord => ord.CargoId) 
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
-        
-        modelBuilder.Entity<OrderDb>()
-            .HasOne(ord => ord.Status)
-            .WithMany(status => status.Orders)
-            .HasForeignKey(ord => ord.StatusId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
     }

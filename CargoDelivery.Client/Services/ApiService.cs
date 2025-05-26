@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
-using CargoDelivery.Domain.Models;
+using CargoDelivery.Client.Enums;
 using Order = CargoDelivery.Client.Models.Order;
 
 namespace CargoDelivery.Client.Services;
@@ -11,166 +11,60 @@ namespace CargoDelivery.Client.Services;
 public class ApiService : IApiService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _baseUrl = "http://localhost:8080/api/v1/";
 
     public ApiService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri(_baseUrl);
-        _httpClient.DefaultRequestHeaders.Accept.Add(
-            new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        _httpClient.BaseAddress = new Uri("http://localhost:8080/api/v1/");
     }
 
-    public async Task<IEnumerable<Order>> GetOrdersAsync()
+    public async Task<PaginatedResponse<Order>> GetOrdersAsync(int pageNumber = 1, int pageSize = 10)
     {
-        try
-        {
-            var response = await _httpClient.GetAsync("orders");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<IEnumerable<Order>>();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Возникла ошибка получении всех заказов", "Ошибка");
-            throw;
-        }
+        var response = await _httpClient.GetFromJsonAsync<PaginatedResponse<Order>>(
+            $"orders?pageNumber={pageNumber}&pageSize={pageSize}");
+        return response;
     }
-    
+
     public async Task<Order> GetOrderByIdAsync(Guid id)
     {
-        try
-        {
-            var response = await _httpClient.GetAsync($"orders/{id}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Order>();
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show("Возникла ошибка при поиске заказа", "Ошибка");
-            throw;
-        }
-    }
-
-    public async Task<IEnumerable<Order>> SearchOrdersAsync(string query)
-    {
-        try
-        {
-            var response = await _httpClient.GetAsync($"orders/search?query={Uri.EscapeDataString(query)}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<IEnumerable<Order>>();
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show("Возникла ошибка при поиске заказа(ов)", "Ошибка");
-            return null;
-        }
+        return await _httpClient.GetFromJsonAsync<Order>($"orders/{id}");
     }
 
     public async Task<Order> CreateOrderAsync(Order order)
     {
-        try
-        {
-            var content = new StringContent(
-                JsonSerializer.Serialize(order),
-                Encoding.UTF8,
-                "application/json");
-
-            var response = await _httpClient.PostAsync("orders", content);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Order>();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невозможно создать заказ", "Ошибка");
-            return null;
-        }
+        var response = await _httpClient.PostAsJsonAsync("orders", order);
+        return await response.Content.ReadFromJsonAsync<Order>();
     }
 
-    public async Task UpdateOrderAsync(Order order)
+    public async Task<bool> UpdateOrderAsync(Order order)
     {
-        try
-        {
-            var content = new StringContent(
-                JsonSerializer.Serialize(order),
-                Encoding.UTF8,
-                "application/json");
-
-            var response = await _httpClient.PutAsync($"Orders/update", content);
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невозможно обновить заказ", "Ошибка");
-        }
+        var response = await _httpClient.PutAsJsonAsync("orders", order);
+        return response.IsSuccessStatusCode;
     }
 
-    public async Task OrderDoneAsync(Order order)
+    public async Task<bool> DeleteOrderAsync(Guid id)
     {
-        try
-        {
-            var orderId = order.Id.ToString();
-            var response = await _httpClient.PostAsync($"orders/done/{orderId}", null);
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невозможно обновить заказ", "Ошибка");
-        }
+        var response = await _httpClient.DeleteAsync($"orders/{id}");
+        return response.IsSuccessStatusCode;
     }
 
-    public async Task OrderInProcessAsync(Order order)
+    public async Task<bool> AssignToCourierAsync(Guid orderId, Guid courierId)
     {
-        try
-        {
-            var orderId = order.Id.ToString();
-            var response = await _httpClient.PostAsync($"orders/inprocess/{orderId}", null);
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невозможно обновить заказ", "Ошибка");
-        }
-    }
+        var response = await _httpClient.PatchAsync($"orders/{orderId}/assign/{courierId}", null);
+        return response.IsSuccessStatusCode;
+    } 
 
-    public async Task OrderCancelAsync(Order order)
+    public async Task<bool> UpdateOrderStatusAsync(Guid orderId, OrderStatus status, string comment = null)
     {
-        try
+       var endpoint = status switch
         {
-            var orderId = order.Id.ToString();
-            var response = await _httpClient.PostAsync($"orders/cancel/{orderId}", null);
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невозможно обновить заказ", "Ошибка");
-        }
-    }
+            OrderStatus.InProcess => $"orders/{orderId}/inprocess",
+            OrderStatus.Done => $"orders/{orderId}/done",
+            OrderStatus.Cancelled => $"orders/{orderId}/cancel?comment={comment}",
+            _ => throw new ArgumentOutOfRangeException(nameof(status))
+        };
 
-    public async Task DeleteOrderAsync(Guid id)
-    {
-        try
-        {
-            var response = await _httpClient.DeleteAsync($"orders/delete/{id}");
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невозможно удалить заказ", "Ошибка");
-        }
-    }
-
-    public async Task<IEnumerable<Courier>> GetCouriersAsync()
-    {
-        try
-        {
-            var response = await _httpClient.GetAsync("couriers");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<IEnumerable<Courier>>();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невозможно получить курьеров", "Ошибка");
-            return null;
-        }
+        var response = await _httpClient.PatchAsync(endpoint, null);
+        return response.IsSuccessStatusCode;
     }
 }

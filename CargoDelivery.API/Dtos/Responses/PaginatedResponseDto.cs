@@ -1,5 +1,9 @@
 namespace CargoDelivery.API.Dtos;
 
+/// <summary>
+/// Модель получения списка объектов
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class PaginatedResponseDto<T>
 {
     public int PageNumber { get; set; }

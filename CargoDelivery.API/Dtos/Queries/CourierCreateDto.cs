@@ -3,17 +3,13 @@ using System.ComponentModel.DataAnnotations;
 namespace CargoDelivery.API.Dtos;
 
 /// <summary>
-/// Модель курьера
+/// Модель создания курьера
 /// </summary>
-public class CourierQueryDto
+public class CourierCreateDto
 {
-    /// <summary>
-    /// Идентификатор курьера
-    /// </summary>
-    public Guid Id { get; init; }
-    
     /// <summary>
     /// Имя курьера
     /// </summary>
+    [Required]
     public string Name { get; init; }
 }

@@ -1,3 +1,4 @@
+using System.Reflection;
 using CargoDelivery.Domain.Interfaces;
 using CargoDelivery.Domain.Mapping;
 using CargoDelivery.Domain.Services;
@@ -5,14 +6,23 @@ using CargoDelivery.Storage.Data;
 using CargoDelivery.Storage.Interfaces;
 using CargoDelivery.Storage.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CargoDelivery API", Version = "v1" });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<ICourierService, CourierService>();
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICourierRepository, CourierRepository>();

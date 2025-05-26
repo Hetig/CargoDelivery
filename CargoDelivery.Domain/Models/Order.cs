@@ -7,7 +7,6 @@ public class Order
     public Guid Id { get; init; }
     public DateTime CreateDateTime { get; init; }
     public OrderStatus Status { get; init; }
-    public int StatusId { get; init; }
     public Client Client { get; init; }
     public Guid ClientId { get; init; }
     public Cargo Cargo { get; init; }
@@ -19,11 +18,11 @@ public class Order
     public string DestinationAddress { get; init; }
     public DateTime DestinationDateTime { get; init; }
     public bool Deleted { get; init; } = false;
-    public string DeletedComment { get; init; }
+    public string CancelledComment { get; init; }
 
     public Order()
     {
         CreateDateTime = DateTime.UtcNow;
-        StatusId = (int)OrderStatus.New;
+        Status = OrderStatus.New;
     }
 }

@@ -26,7 +26,6 @@ public class OrderRepository : IOrderRepository
             .Include(ord => ord.Cargo)   
             .Include(ord => ord.Client)  
             .Include(ord => ord.Courier)
-            .Include(ord => ord.Status)
             .OrderBy(o => o.CreateDateTime)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -55,7 +54,6 @@ public class OrderRepository : IOrderRepository
                                 .Include(ord => ord.Cargo)   
                                 .Include(ord => ord.Client)  
                                 .Include(ord => ord.Courier)
-                                .Include(ord => ord.Status)
                                 .ToListAsync(cancellationToken);
         
         return (data, data.Count);
@@ -67,7 +65,6 @@ public class OrderRepository : IOrderRepository
                                     .Include(ord => ord.Cargo)
                                     .Include(ord => ord.Client)
                                     .Include(ord => ord.Courier)
-                                    .Include(ord => ord.Status)
                                         .FirstOrDefaultAsync(ord => ord.Id == id, cancellationToken);
     }
 

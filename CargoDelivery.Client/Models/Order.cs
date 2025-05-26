@@ -1,14 +1,14 @@
 using System.ComponentModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Runtime.CompilerServices;
-using CargoDelivery.Domain.Models;
-using CargoDelivery.Storage.Enums;
+using CargoDelivery.Client.Enums;
 
 namespace CargoDelivery.Client.Models;
 
 public class Order : INotifyPropertyChanged
 {
     private Guid _id;
-    private Domain.Models.Client _client;
+    private Client _client;
     private DateTime _createDateTime;
     private Cargo _cargo;
     private string _pickupAddress;
@@ -23,7 +23,7 @@ public class Order : INotifyPropertyChanged
     public Guid Id { get => _id; set { _id = value; OnPropertyChanged(); } }
     public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged(); } }
     public OrderStatus Status { get => _statusDb; set { _statusDb = value; OnPropertyChanged(); } }
-    public Domain.Models.Client Client { get => _client; set { _client = value; OnPropertyChanged(); } }
+    public Client Client { get => _client; set { _client = value; OnPropertyChanged(); } }
     public Cargo Cargo { get => _cargo; set { _cargo = value; OnPropertyChanged(); } }
     public string TakeAddress { get => _pickupAddress; set { _pickupAddress = value; OnPropertyChanged(); } }
     public DateTime TakeDateTime { get => _takeDateTime; set { _takeDateTime = value; OnPropertyChanged(); } }

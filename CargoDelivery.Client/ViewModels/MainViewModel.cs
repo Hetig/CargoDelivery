@@ -1,23 +1,35 @@
 using System.Windows.Input;
 using CargoDelivery.Client.Commands;
 using CargoDelivery.Client.Services;
+using CargoDelivery.Client.ViewModels;
 
-namespace CargoDelivery.Client.ViewModels;
-
-public class MainViewModel : ViewModelBase
+namespace CargoDelivery.Client.ViewModels
 {
-    private readonly INavigationService _navigationService;
-    
-    public ICommand NavigateHomeCommand { get; }
-
-    public MainViewModel(INavigationService navigationService)
+    public class MainViewModel : ViewModelBase
     {
-        _navigationService = navigationService;
-        
-        NavigateHomeCommand = new RelayCommand(NavigateToHome);
-        
-        _navigationService.NavigateTo<OrdersViewModel>();
+        private readonly INavigationService _navigationService;
+
+        public ICommand NavigateToOrdersCommand { get; }
+        public ICommand NavigateToCreateOrderCommand { get; }
+
+        public MainViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+            
+            NavigateToOrdersCommand = new RelayCommand(NavigateToOrders);
+            NavigateToCreateOrderCommand = new RelayCommand(NavigateToCreateOrder);
+            
+            NavigateToOrders();
+        }
+
+        private void NavigateToOrders()
+        {
+            _navigationService.NavigateTo<OrdersViewModel>();
+        }
+
+        private void NavigateToCreateOrder()
+        {
+            _navigationService.NavigateTo<OrderCreateViewModel>();
+        }
     }
-    
-    private void NavigateToHome() => _navigationService.NavigateTo<OrdersViewModel>();
 }

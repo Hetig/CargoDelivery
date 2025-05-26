@@ -82,7 +82,7 @@ public class OrderService : IOrderService
     public async Task<bool> UpdateAsync(Order order, CancellationToken cancellationToken)
     {
         var orderToUpdate = await _orderRepository.GetByIdAsync(order.Id, cancellationToken);
-        if (orderToUpdate == null || orderToUpdate?.StatusId != (int)OrderStatus.New)
+        if (orderToUpdate == null || orderToUpdate?.Status != OrderStatus.New)
             return false;
         
         orderToUpdate.DestinationAddress = order.DestinationAddress;
@@ -108,7 +108,7 @@ public class OrderService : IOrderService
         var orderInProcess = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
         if(orderInProcess == null) return false;
         
-        orderInProcess.StatusId = (int)OrderStatus.InProcess;
+        orderInProcess.Status = OrderStatus.InProcess;
         
         return await _orderRepository.UpdateAsync(orderInProcess, cancellationToken);
     }
@@ -118,7 +118,7 @@ public class OrderService : IOrderService
         var orderToDone = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
         if(orderToDone == null) return false;
         
-        orderToDone.StatusId = (int)OrderStatus.Done;
+        orderToDone.Status = OrderStatus.Done;
         
         return await _orderRepository.UpdateAsync(orderToDone, cancellationToken);
     }
@@ -128,7 +128,7 @@ public class OrderService : IOrderService
         var orderToCancel = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
         if(orderToCancel == null) return false;
         
-        orderToCancel.StatusId = (int)OrderStatus.Cancelled;
+        orderToCancel.Status = OrderStatus.Cancelled;
         orderToCancel.CancelledComment = comment;
         
         return await _orderRepository.UpdateAsync(orderToCancel, cancellationToken);

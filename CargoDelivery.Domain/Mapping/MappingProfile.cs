@@ -13,9 +13,6 @@ public class MappingProfile : Profile
         CreateMap<ClientDb, Client>().ReverseMap();
         CreateMap<CargoDb, Cargo>().ReverseMap();
         CreateMap<CourierDb, Courier>().ReverseMap();
-        CreateMap<OrderStatus, OrderStatusDb>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (int)src))
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ToString()))
-            .ReverseMap();
+        CreateMap<OrderStatus, Domain.Enums.OrderStatus>().ReverseMap();
     }
 }

@@ -24,4 +24,11 @@ public class ClientRepository : IClientRepository
         return await _dbContext.Clients.AsNoTracking()
                                     .ToListAsync(cancellationToken);
     }
+
+    public async Task<ClientDb> AddAsync(ClientDb clientDb, CancellationToken cancellationToken)
+    {
+        var createdClient = await _dbContext.Clients.AddAsync(clientDb, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return createdClient.Entity;
+    }
 }

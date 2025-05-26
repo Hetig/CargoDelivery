@@ -1,6 +1,7 @@
 using AutoMapper;
 using CargoDelivery.Domain.Interfaces;
 using CargoDelivery.Domain.Models;
+using CargoDelivery.Storage.Entities;
 using CargoDelivery.Storage.Interfaces;
 
 namespace CargoDelivery.Domain.Services;
@@ -26,5 +27,11 @@ public class ClientService : IClientService
     {
         var clientsDb = await _clientRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<List<Client>>(clientsDb);
+    }
+
+    public async Task<Client> AddAsync(Client client, CancellationToken cancellationToken)
+    {
+        var createdClient = await _clientRepository.AddAsync(_mapper.Map<ClientDb>(client), cancellationToken);
+        return _mapper.Map<Client>(createdClient);
     }
 }

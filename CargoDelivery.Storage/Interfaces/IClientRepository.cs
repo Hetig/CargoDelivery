@@ -6,4 +6,5 @@ public interface IClientRepository
 {
     Task<ClientDb> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<List<ClientDb>> GetAllAsync(CancellationToken cancellationToken);
+    Task<ClientDb> AddAsync(ClientDb clientDb, CancellationToken cancellationToken);
 }

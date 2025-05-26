@@ -1,12 +1,12 @@
 <UserControl x:Class="CargoDelivery.Client.Views.Orders"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:CargoDelivery.Client.Views"
-      xmlns:viewModels="clr-namespace:CargoDelivery.Client.ViewModels"
-      mc:Ignorable="d" Height="450" Width="800"
-      d:DataContext="{d:DesignInstance viewModels:OrdersViewModel}">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CargoDelivery.Client.Views"
+             xmlns:viewModels="clr-namespace:CargoDelivery.Client.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,44 +14,34 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <ToolBar Grid.Row="0">
-            <Button Content="Обновить" Command="{Binding LoadOrdersCommand}"/>
-            <Button Content="Добавить" Command="{Binding AddOrderCommand}"/>
-            <Button Content="Редактировать" Command="{Binding EditOrderCommand}"/>
-            <Button Content="Удалить" Command="{Binding DeleteOrderCommand}"/>
-            <Separator/>
-            <Button Content="Передать курьеру" Command="{Binding AssignToCourierCommand}"/>
-            <Button Content="Завершить" Command="{Binding CompleteOrderCommand}"/>
-            <Button Content="Отменить" Command="{Binding CancelOrderCommand}"/>
-        </ToolBar>
-
-        <TextBox Grid.Row="1" Margin="5" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
-
-        <DataGrid Grid.Row="2" Margin="5" ItemsSource="{Binding Orders}" 
-                  SelectedItem="{Binding SelectedOrder}" AutoGenerateColumns="False"
-                  IsReadOnly="True">
+        
+        <TextBlock Grid.Row="0" Text="Orders" FontSize="20" Margin="10"/>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
+            <TextBox Width="200" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Search" Command="{Binding SearchCommand}" Margin="5,0,0,0"/>
+            <Button Content="Refresh" Command="{Binding RefreshCommand}" Margin="5,0,0,0"/>
+        </StackPanel>
+        
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Orders}" AutoGenerateColumns="False" Margin="10"
+                  SelectedItem="{Binding SelectedOrder}" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
-                <DataGridTextColumn Header="Клиент" Binding="{Binding Client.Name}" Width="*"/>
-                <DataGridTextColumn Header="Груз" Binding="{Binding Cargo.Name}" Width="*"/>
-                <DataGridTextColumn Header="Адрес забора" Binding="{Binding TakeAddress}" Width="*"/>
-                <DataGridTextColumn Header="Время забора" Binding="{Binding TakeDateTime}" Width="Auto"/>
-                <DataGridTextColumn Header="Адрес доставки" Binding="{Binding DestinationAddress}" Width="*"/>
-                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="Auto">
-                    
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Курьер" Binding="{Binding Courier.Name}" Width="Auto"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Client" Binding="{Binding Client.Name}"/>
+                <DataGridTextColumn Header="Pickup Address" Binding="{Binding TakeAddress}"/>
+                <DataGridTextColumn Header="Pickup Time" Binding="{Binding TakeDateTime}"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding DestinationAddress}"/>
             </DataGrid.Columns>
         </DataGrid>
-
-        <StatusBar Grid.Row="3">
-            <StatusBarItem>
-                <TextBlock Text="{Binding Orders.Count, StringFormat='Всего заявок: {0}'}"/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <ProgressBar Width="100" Height="16" IsIndeterminate="{Binding IsBusy}" />
-            </StatusBarItem>
-        </StatusBar>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Edit" Command="{Binding EditCommand}" Margin="0,0,5,0"/>
+            <Button Content="Assign Courier" Command="{Binding AssignCourierCommand}" Margin="0,0,5,0"/>
+            <Button Content="Set In Process" Command="{Binding SetInProcessCommand}" Margin="0,0,5,0"/>
+            <Button Content="Set Done" Command="{Binding SetDoneCommand}" Margin="0,0,5,0"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="0,0,5,0"/>
+            <Button Content="Delete" Command="{Binding DeleteCommand}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

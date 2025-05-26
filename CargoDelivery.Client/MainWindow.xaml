@@ -3,10 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CargoDelivery.Client"
         xmlns:viewModels="clr-namespace:CargoDelivery.Client.ViewModels"
         mc:Ignorable="d"
         Title="Управление заявками на доставку" Height="600" Width="800"
-        d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
-    
-    <ContentControl Content="{Binding NavigationService.CurrentView}"/>
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Menu Grid.Row="0">
+            <MenuItem Header="Orders">
+                <MenuItem Header="View Orders" Command="{Binding NavigateToOrdersCommand}"/>
+                <MenuItem Header="Create Order" Command="{Binding NavigateToCreateOrderCommand}"/>
+            </MenuItem>
+        </Menu>
+        
+        <ContentControl Grid.Row="1" Content="{Binding NavigationService.CurrentView}"/>
+    </Grid>
 </Window>

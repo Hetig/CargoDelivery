@@ -23,7 +23,14 @@ public class OrdersController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("create")]
+    
+    /// <summary>
+    /// Метод создания заказа
+    /// </summary>
+    /// <param name="orderDto"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost]
     public async Task<ActionResult<OrderResponseDto>> Create([FromBody] OrderCreateDto orderDto, CancellationToken cancellationToken)
     {
         try
@@ -44,6 +51,12 @@ public class OrdersController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Метод получения заказа по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор заказа</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<OrderResponseDto>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
@@ -61,6 +74,12 @@ public class OrdersController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Метод получения списка заказов
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<ActionResult<PaginatedResponseDto<OrderResponseDto>>> GetAll(
         [FromQuery] PaginationRequestDto request,
@@ -89,6 +108,13 @@ public class OrdersController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Метод для поиска по заказам
+    /// </summary>
+    /// <param name="query">Строка запроса для поиска</param>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("search")]
     public async Task<ActionResult<PaginatedResponseDto<OrderResponseDto>>> Search(
         [FromQuery] string query, 
@@ -120,7 +146,13 @@ public class OrdersController : ControllerBase
         }
     }
     
-    [HttpPatch("update")]
+    /// <summary>
+    /// Метод обновления данных заказа
+    /// </summary>
+    /// <param name="orderDto"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPut]
     public async Task<IActionResult> Update(
         [FromBody] OrderUpdateDto orderDto, 
         CancellationToken cancellationToken)
@@ -142,98 +174,129 @@ public class OrdersController : ControllerBase
         }
     }
     
-    [HttpPost("{orderId}/assign/{courierId}")]
+    /// <summary>
+    /// Метод отправки заказа курьеру
+    /// </summary>
+    /// <param name="id">Идентификатор заказа</param>
+    /// <param name="courierId">Идентификатор курьера</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPatch("{id}/assign/{courierId}")]
     public async Task<ActionResult> AssignToCourier(
-        [FromRoute] Guid orderId, 
+        [FromRoute] Guid id, 
         [FromRoute] Guid courierId, 
         CancellationToken cancellationToken)
     {
         try
         {
             var isAssigned  = await _orderService.AssignToCourierAsync(courierId,
-                orderId, 
+                id, 
                 cancellationToken);
             if (!isAssigned ) return NotFound();
             return Ok();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to assign courier {CourierId} to order {OrderId}", courierId, orderId);
+            _logger.LogError(ex, "Failed to assign courier {CourierId} to order {OrderId}", courierId, id);
             return StatusCode(500, "Internal server error");
         }
     }
 
-    [HttpPost("inprocess/{orderId}")]
+    /// <summary>
+    /// Метод установки статуса заказа "В процессе"
+    /// </summary>
+    /// <param name="id">Идентификатор заказа</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPatch("{id}/inprocess")]
     public async Task<ActionResult> SetInProcessStatus(
-        [FromRoute] Guid orderId, 
+        [FromRoute] Guid id, 
         CancellationToken cancellationToken)
     {
         try
         {
-            var result = await _orderService.SetInProcessStatusAsync(orderId, cancellationToken);
+            var result = await _orderService.SetInProcessStatusAsync(id, cancellationToken);
             
             if(!result) return NotFound();
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to set in process status", orderId);
+            _logger.LogError(ex, "Failed to set in process status", id);
             return StatusCode(500, "Internal server error");
         }
     }
     
-    [HttpPost("done/{orderId}")]
+    /// <summary>
+    /// Метод установки статуса заказа "Завершено"
+    /// </summary>
+    /// <param name="id">Идентификатор заказа</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPatch("{id}/done")]
     public async Task<ActionResult> SetDoneStatus(
-        [FromRoute] Guid orderId, 
+        [FromRoute] Guid id, 
         CancellationToken cancellationToken)
     {
         try
         {
-            var result = await _orderService.SetDoneStatusAsync(orderId, cancellationToken);
+            var result = await _orderService.SetDoneStatusAsync(id, cancellationToken);
         
             if(!result) return NotFound();
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to set in done status", orderId);
+            _logger.LogError(ex, "Failed to set in done status", id);
             return StatusCode(500, "Internal server error");
         }
     }
     
-    [HttpPost("cancel/{orderId}")]
+    /// <summary>
+    /// Метод установки статуса заказа "Отменен"
+    /// </summary>
+    /// <param name="id">Идентификатор заказа</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPatch("{id}/cancel")]
     public async Task<ActionResult> SetCancelStatus(
-        [FromRoute] Guid orderId, 
+        [FromRoute] Guid id, 
         [FromQuery] string comment, 
         CancellationToken cancellationToken)
     {
         try
         {
-            var result = await _orderService.SetCancelStatusAsync(orderId, comment, cancellationToken);
+            var result = await _orderService.SetCancelStatusAsync(id, comment, cancellationToken);
         
             if(!result) return NotFound();
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to set in cancel status", orderId);
+            _logger.LogError(ex, "Failed to set in cancel status", id);
             return StatusCode(500, "Internal server error");
         }
     }
 
-    [HttpDelete("delete/{orderId}")]
-    public async Task<ActionResult> Delete([FromRoute] Guid orderId, CancellationToken cancellationToken)
+    /// <summary>
+    /// Метод для удаления заказа
+    /// </summary>
+    /// <param name="id">Идентификатор заказа</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         try
         {
-            var result = await _orderService.DeleteAsync(orderId, cancellationToken);
+            var result = await _orderService.DeleteAsync(id, cancellationToken);
         
             if(!result) return NotFound();
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to delete order", orderId);
+            _logger.LogError(ex, "Failed to delete order", id);
             return StatusCode(500, "Internal server error");
         }
     }

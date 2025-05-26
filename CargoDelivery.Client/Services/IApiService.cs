@@ -1,19 +1,15 @@
-using CargoDelivery.Domain.Models;
-using Order = CargoDelivery.Client.Models.Order;
+using CargoDelivery.Client.Enums;
+using CargoDelivery.Client.Models;
 
 namespace CargoDelivery.Client.Services;
 
 public interface IApiService
 {
-    Task<IEnumerable<Order>> GetOrdersAsync();
+    Task<PaginatedResponse<Order>> GetOrdersAsync(int pageNumber = 1, int pageSize = 10);
     Task<Order> GetOrderByIdAsync(Guid id);
-    Task<IEnumerable<Order>> SearchOrdersAsync(string query);
     Task<Order> CreateOrderAsync(Order order);
-    Task UpdateOrderAsync(Order order);
-    Task OrderDoneAsync(Order order);
-    Task OrderInProcessAsync(Order order);
-    Task OrderCancelAsync(Order order);
-    Task DeleteOrderAsync(Guid id);
-        
-    Task<IEnumerable<Courier>> GetCouriersAsync();
+    Task<bool> UpdateOrderAsync(Order order);
+    Task<bool> DeleteOrderAsync(Guid id);
+    Task<bool> AssignToCourierAsync(Guid orderId, Guid courierId);
+    Task<bool> UpdateOrderStatusAsync(Guid orderId, OrderStatus status, string comment = null);
 }

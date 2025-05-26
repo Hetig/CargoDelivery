@@ -23,4 +23,11 @@ public class CourierRepository : ICourierRepository
         return await _dbContext.Couriers.AsNoTracking()
                                         .ToListAsync(cancellationToken);
     }
+
+    public async Task<CourierDb> AddAsync(CourierDb courier, CancellationToken cancellationToken)
+    {
+        var createdCourier = await _dbContext.Couriers.AddAsync(courier, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return createdCourier.Entity;
+    }
 }

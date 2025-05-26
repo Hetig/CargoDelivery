@@ -8,5 +8,4 @@ public class OrderStatusDb
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public List<OrderDb> Orders { get; set; }
 }
