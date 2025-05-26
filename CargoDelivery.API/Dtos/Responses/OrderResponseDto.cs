@@ -58,7 +58,7 @@ public class OrderResponseDto
     public DateTime DestinationDateTime { get; init; }
     
     /// <summary>
-    /// Комментарий при удалении
+    /// Комментарий при отмене заказа
     /// </summary>
     public string CancelledComment { get; init; }
 }

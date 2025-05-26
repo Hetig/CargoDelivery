@@ -4,6 +4,8 @@ using System.Text;
 using System.Text.Json;
 using System.Windows;
 using CargoDelivery.Client.Enums;
+using CargoDelivery.Client.Models;
+using CargoDelivery.Client.Models.Queries;
 using Order = CargoDelivery.Client.Models.Order;
 
 namespace CargoDelivery.Client.Services;
@@ -54,17 +56,48 @@ public class ApiService : IApiService
         return response.IsSuccessStatusCode;
     } 
 
-    public async Task<bool> UpdateOrderStatusAsync(Guid orderId, OrderStatus status, string comment = null)
+    public async Task<bool> SetInProcessAsync(Guid orderId)
     {
-       var endpoint = status switch
-        {
-            OrderStatus.InProcess => $"orders/{orderId}/inprocess",
-            OrderStatus.Done => $"orders/{orderId}/done",
-            OrderStatus.Cancelled => $"orders/{orderId}/cancel?comment={comment}",
-            _ => throw new ArgumentOutOfRangeException(nameof(status))
-        };
-
-        var response = await _httpClient.PatchAsync(endpoint, null);
+        var response = await _httpClient.PatchAsync(
+            $"orders/{orderId}/inprocess", null);
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> SetDoneAsync(Guid orderId)
+    {
+        var response = await _httpClient.PatchAsync(
+            $"orders/{orderId}/done", null);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> SetCancelAsync(Guid orderId, string comment)
+    {
+        var response = await _httpClient.PatchAsync(
+            $"orders/{orderId}/cancel?comment={comment}", null);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<List<Models.Client>> GetClientsAsync()
+    {
+        var clients = await _httpClient.GetFromJsonAsync<List<Models.Client>>($"clients");
+        return clients;
+    }
+
+    public async Task<List<Courier>> GetCouriersAsync()
+    {
+        var couriers = await _httpClient.GetFromJsonAsync<List<Models.Courier>>($"couriers");
+        return couriers;
+    }
+
+    public async Task<Models.Client> CreateClientAsync(CreateClient client)
+    {
+        var response = await _httpClient.PostAsJsonAsync($"clients", client);
+        return await response.Content.ReadFromJsonAsync<Models.Client>();
+    }
+
+    public async Task<Courier> CreateCourierAsync(CreateCourier courier)
+    {
+        var response = await _httpClient.PostAsJsonAsync($"couriers", courier);
+        return await response.Content.ReadFromJsonAsync<Courier>();
     }
 }

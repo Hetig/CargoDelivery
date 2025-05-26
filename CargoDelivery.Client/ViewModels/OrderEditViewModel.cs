@@ -5,8 +5,5 @@ namespace CargoDelivery.Client.ViewModels;
 
 public class OrderEditViewModel : ViewModelBase
 {
-    public OrderEditViewModel(IApiService apiService, INavigationService navigationService, Order order)
-    {
-        
-    }
+   
 }

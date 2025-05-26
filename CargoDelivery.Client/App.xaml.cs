@@ -14,33 +14,34 @@ namespace CargoDelivery.Client;
 public partial class App : Application
 {
     public static IServiceProvider ServiceProvider { get; private set; }
-
+    public static MainWindow MainWindow { get; private set; }
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-
+    
         var services = new ServiceCollection();
-        ConfigureServices(services);
-        ServiceProvider = services.BuildServiceProvider();
-
-        var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-        mainWindow.Show();
+        ConfigureServices(services); 
+    
+        ServiceProvider = services.BuildServiceProvider(); 
+    
+        var apiService = ServiceProvider.GetRequiredService<IApiService>();
+    
+        Screens.CreateOrder = new CreateOrder(apiService);
+        Screens.CreateClient = new CreateClient(apiService);
+        Screens.CreateCourier = new CreateCourier(apiService);
+        Screens.Orders = new Orders(apiService);
+        Screens.EditOrder = new EditOrder(apiService);
+        Screens.Clients = new Clients(apiService);
+        Screens.Couriers = new Couriers(apiService);
+    
+        MainWindow = new MainWindow();
+        MainWindow.Show();
+        ScreenNavigator.GoToOrders();
     }
 
     private void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<OrdersViewModel>();
-        services.AddSingleton<OrderCreateViewModel>();
-        services.AddSingleton<OrderEditViewModel>();
-        
-        services.AddSingleton<Orders>();
-
         services.AddSingleton<HttpClient>();
         services.AddSingleton<IApiService, ApiService>();
-
-        services.AddSingleton<INavigationService>(provider =>
-            new NavigationService(type => (ViewModelBase)provider.GetRequiredService(type)));
-        services.AddSingleton<MainWindow>();
     }
 }

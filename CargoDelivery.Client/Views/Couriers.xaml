@@ -1,0 +1,38 @@
+<Page x:Class="CargoDelivery.Client.Views.Couriers"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:CargoDelivery.Client.Views"
+      mc:Ignorable="d"
+      Title="Couriers" Height="600" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+       
+        <Menu Grid.Row="0">
+            <MenuItem Header="Заказы" Command="{Binding OrdersCommand}"/>
+            <MenuItem Header="Курьеры" Command="{Binding CouriersCommand}"/>
+            <MenuItem Header="Клиенты" Command="{Binding ClientsCommand}"/>
+        </Menu>
+        
+        <TextBlock Grid.Row="1" Text="Курьеры" FontSize="20" Margin="10"/>
+        
+        
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Couriers}" AutoGenerateColumns="False" Margin="10"
+                  SelectedItem="{Binding SelectedOrder}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="30">
+            <Button Grid.Row="3" Content="Создать" HorizontalAlignment="Right" Command="{Binding CreateClientCommand}" Width="100"/>
+        </StackPanel>
+    </Grid>
+</Page>

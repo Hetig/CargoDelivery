@@ -2,6 +2,7 @@ using CargoDelivery.Client.Commands;
 using CargoDelivery.Client.Models;
 using CargoDelivery.Client.Services;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,13 +13,12 @@ namespace CargoDelivery.Client.ViewModels
     public class OrdersViewModel : ViewModelBase
     {
         private readonly IApiService _apiService;
-        private readonly INavigationService _navigationService;
         
-        private List<Order> _orders;
+        private ObservableCollection<Order> _orders;
         private Order _selectedOrder;
         private string _searchText;
 
-        public List<Order> Orders
+        public ObservableCollection<Order> Orders
         {
             get => _orders;
             set => SetField(ref _orders, value);
@@ -38,26 +38,34 @@ namespace CargoDelivery.Client.ViewModels
 
         public ICommand RefreshCommand { get; }
         public ICommand SearchCommand { get; }
+        public ICommand CreateCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand AssignCourierCommand { get; }
         public ICommand SetInProcessCommand { get; }
         public ICommand SetDoneCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand OrdersCommand { get; }
+        public ICommand ClientsCommand { get; }
+        public ICommand CouriersCommand { get; }
 
-        public OrdersViewModel(IApiService apiService, INavigationService navigationService)
+        public OrdersViewModel(IApiService apiService)
         {
             _apiService = apiService;
-            _navigationService = navigationService;
             
             RefreshCommand = new RelayCommand(async () => await LoadOrders());
             SearchCommand = new RelayCommand(async () => await SearchOrders());
             EditCommand = new RelayCommand(EditOrder, CanEditOrder);
+            CreateCommand = new RelayCommand(CreateOrder, null);
             AssignCourierCommand = new RelayCommand(AssignCourier, CanModifyOrder);
-            SetInProcessCommand = new RelayCommand(async () => await SetOrderStatus(OrderStatus.InProcess), CanModifyOrder);
-            SetDoneCommand = new RelayCommand(async () => await SetOrderStatus(OrderStatus.Done), CanModifyOrder);
+            SetInProcessCommand = new RelayCommand(async () => await InProcessOrder(), CanModifyOrder);
+            SetDoneCommand = new RelayCommand(async () => await DoneOrder(), CanModifyOrder);
             CancelCommand = new RelayCommand(async () => await CancelOrder(), CanModifyOrder);
             DeleteCommand = new RelayCommand(async () => await DeleteOrder(), CanModifyOrder);
+
+            OrdersCommand = new RelayCommand(() => ScreenNavigator.GoToOrders());
+            ClientsCommand = new RelayCommand(() => ScreenNavigator.GoToClients());
+            CouriersCommand = new RelayCommand(() => ScreenNavigator.GoToCouriers());
             
             LoadOrders().ConfigureAwait(false);
         }
@@ -65,7 +73,8 @@ namespace CargoDelivery.Client.ViewModels
         private async Task LoadOrders()
         {
             var response = await _apiService.GetOrdersAsync();
-            Orders = response?.Data ?? new List<Order>();
+            var orders = response?.Data ?? new List<Order>();
+            Orders = new ObservableCollection<Order>(orders);
         }
 
         private async Task SearchOrders()
@@ -74,29 +83,46 @@ namespace CargoDelivery.Client.ViewModels
             if (!string.IsNullOrEmpty(SearchText))
             {
                 var searchTextLower = SearchText.ToLower();
-                Orders = Orders.Where(o =>
+                var orders = Orders.Where(o =>
                     o.Id.ToString().Contains(searchTextLower) ||
                     o.Status.ToString().ToLower().Contains(searchTextLower) ||
                     o.Client.Name.ToLower().Contains(searchTextLower) ||
                     o.TakeAddress.ToLower().Contains(searchTextLower) ||
                     o.DestinationAddress.ToLower().Contains(searchTextLower)
                 ).ToList();
+                
+                Orders = new ObservableCollection<Order>(orders);
             }
         }
 
+        private void CreateOrder()
+        {
+            ScreenNavigator.GoToCreateOrder();
+        }
         private void EditOrder()
         {
             if (SelectedOrder != null && SelectedOrder.Status == OrderStatus.New)
             {
-                _navigationService.NavigateTo(new OrderEditViewModel(_apiService, _navigationService, SelectedOrder));
+                // Navigate to Edit Order
             }
         }
 
-        private async Task SetOrderStatus(OrderStatus status)
+        private async Task DoneOrder()
         {
             if (SelectedOrder != null)
             {
-                var success = await _apiService.UpdateOrderStatusAsync(SelectedOrder.Id, status);
+                var success = await _apiService.SetDoneAsync(SelectedOrder.Id);
+                if (success)
+                {
+                    await LoadOrders();
+                }
+            }
+        }
+        private async Task InProcessOrder()
+        {
+            if (SelectedOrder != null)
+            {
+                var success = await _apiService.SetInProcessAsync(SelectedOrder.Id);
                 if (success)
                 {
                     await LoadOrders();
@@ -108,8 +134,8 @@ namespace CargoDelivery.Client.ViewModels
         {
             if (SelectedOrder != null)
             {
-                var comment = "User cancelled"; // Get from dialog
-                var success = await _apiService.UpdateOrderStatusAsync(SelectedOrder.Id, OrderStatus.Cancelled, comment);
+                var comment = "User cancelled";
+                var success = await _apiService.SetCancelAsync(SelectedOrder.Id, comment);
                 if (success)
                 {
                     await LoadOrders();
