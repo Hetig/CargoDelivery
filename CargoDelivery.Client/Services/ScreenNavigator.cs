@@ -25,19 +25,37 @@ public static class ScreenNavigator
         var view = new CreateOrder(apiService);
         if (view.ShowDialog() == true)
         {
-            var newOrder = new Order();            
-            //OrderRepository.Add(newOrder);
-            
             GoToOrders();
         }
     }
 
     public static void GoToCreateCourier()
     {
-        App.MainWindow.Content = Screens.CreateCourier;
+        var apiService = App.ServiceProvider.GetRequiredService<IApiService>();
+        var view = new CreateCourier(apiService);
+        if (view.ShowDialog() == true)
+        {
+            GoToCouriers();
+        }
     }
     public static void GoToCreateClient()
     {
-        App.MainWindow.Content = Screens.CreateClient;
+        var apiService = App.ServiceProvider.GetRequiredService<IApiService>();
+        var view = new CreateClient(apiService);
+        view.ShowDialog();
+    }
+
+    public static void GoToEditOrder(Guid orderId)
+    {
+        var apiService = App.ServiceProvider.GetRequiredService<IApiService>();
+        var view = new EditOrder(apiService, orderId);
+        view.ShowDialog();
+    }
+
+    public static void AssignToCourier(Guid orderId)
+    {
+        var apiService = App.ServiceProvider.GetRequiredService<IApiService>();
+        var view = new AssignToCourier(apiService, orderId);
+        view.ShowDialog();
     }
 }

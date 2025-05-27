@@ -21,19 +21,32 @@ namespace CargoDelivery.Client.ViewModels
         public ObservableCollection<Order> Orders
         {
             get => _orders;
-            set => SetField(ref _orders, value);
+            set
+            {
+                _orders = value;
+                OnPropertyChanged(() => Orders);
+            }
         }
 
         public Order SelectedOrder
         {
             get => _selectedOrder;
-            set => SetField(ref _selectedOrder, value);
+            set
+            {
+                _selectedOrder = value;
+                OnPropertyChanged(() => SelectedOrder);
+            }
         }
-
+        
+        
         public string SearchText
         {
             get => _searchText;
-            set => SetField(ref _searchText, value);
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged(() => SearchText);
+            }
         }
 
         public ICommand RefreshCommand { get; }
@@ -79,19 +92,10 @@ namespace CargoDelivery.Client.ViewModels
 
         private async Task SearchOrders()
         {
-            await LoadOrders();
             if (!string.IsNullOrEmpty(SearchText))
             {
-                var searchTextLower = SearchText.ToLower();
-                var orders = Orders.Where(o =>
-                    o.Id.ToString().Contains(searchTextLower) ||
-                    o.Status.ToString().ToLower().Contains(searchTextLower) ||
-                    o.Client.Name.ToLower().Contains(searchTextLower) ||
-                    o.TakeAddress.ToLower().Contains(searchTextLower) ||
-                    o.DestinationAddress.ToLower().Contains(searchTextLower)
-                ).ToList();
-                
-                Orders = new ObservableCollection<Order>(orders);
+                var findedElements = await _apiService.SearchOrdersAsync(SearchText);
+                Orders = new ObservableCollection<Order>(findedElements);
             }
         }
 
@@ -103,7 +107,7 @@ namespace CargoDelivery.Client.ViewModels
         {
             if (SelectedOrder != null && SelectedOrder.Status == OrderStatus.New)
             {
-                // Navigate to Edit Order
+                ScreenNavigator.GoToEditOrder(SelectedOrder.Id);
             }
         }
 
@@ -157,7 +161,10 @@ namespace CargoDelivery.Client.ViewModels
 
         private void AssignCourier()
         {
-            
+            if (SelectedOrder != null && SelectedOrder.Status != OrderStatus.Done)
+            {
+                ScreenNavigator.AssignToCourier(SelectedOrder.Id);
+            }
         }
 
         private bool CanEditOrder() => SelectedOrder != null && SelectedOrder.Status == OrderStatus.New;

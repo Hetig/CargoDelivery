@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:CargoDelivery.Client.Views"
       mc:Ignorable="d"
-      Title="Couriers" Height="600" Width="1200">
+      Title="Couriers" d:DesignHeight="600" d:DesignWidth="1200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -32,7 +32,8 @@
         </DataGrid>
         
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="30">
-            <Button Grid.Row="3" Content="Создать" HorizontalAlignment="Right" Command="{Binding CreateClientCommand}" Width="100"/>
+            <Button Content="Обновить" HorizontalAlignment="Right" Command="{Binding RefreshCommand}" Width="100" Margin="10"/>
+            <Button Grid.Row="3" Content="Создать" HorizontalAlignment="Right" Command="{Binding CreateCourierCommand}" Width="100" Margin="10"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -1,22 +1,30 @@
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
 namespace CargoDelivery.Client.ViewModels;
 
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected void OnPropertyChanged<T>(Expression<Func<T>> action)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        var propertyName = GetPropertyName(action);
+        this.OnPropertyChanged(propertyName);
     }
-
-    protected virtual bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    private static string GetPropertyName<T>(Expression<Func<T>> action)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
+        var expression = (MemberExpression)action.Body;
+        var propertyName = expression.Member.Name;
+        return propertyName;
     }
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChangedEventHandler handler = this.PropertyChanged;
+        if (handler != null)
+        {
+            var e = new PropertyChangedEventArgs(propertyName);
+            handler(this, e);
+        }
+    }
+    public event PropertyChangedEventHandler PropertyChanged;
 }

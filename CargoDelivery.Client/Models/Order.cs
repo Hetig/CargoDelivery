@@ -10,7 +10,7 @@ public class Order : INotifyPropertyChanged
     private Guid _id;
     private Client _client;
     private DateTime _createDateTime;
-    private Cargo _cargo;
+    private Cargo _cargo = new Cargo();
     private string _pickupAddress;
     private DateTime _takeDateTime;
     private string _destinationAddress;
@@ -23,7 +23,7 @@ public class Order : INotifyPropertyChanged
     public Guid Id { get => _id; set { _id = value; OnPropertyChanged(); } }
     public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged(); } }
     public OrderStatus Status { get => _statusDb; set { _statusDb = value; OnPropertyChanged(); } }
-    public Client Client { get => _client; set { _client = value; OnPropertyChanged(); } }
+    public Client Client { get => _client; set { _client  = value; OnPropertyChanged(); } }
     public Cargo Cargo { get => _cargo; set { _cargo = value; OnPropertyChanged(); } }
     public string TakeAddress { get => _pickupAddress; set { _pickupAddress = value; OnPropertyChanged(); } }
     public DateTime TakeDateTime { get => _takeDateTime; set { _takeDateTime = value; OnPropertyChanged(); } }

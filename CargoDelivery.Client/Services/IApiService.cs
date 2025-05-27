@@ -7,8 +7,9 @@ public interface IApiService
 {
     Task<PaginatedResponse<Order>> GetOrdersAsync(int pageNumber = 1, int pageSize = 10);
     Task<Order> GetOrderByIdAsync(Guid id);
-    Task<Order> CreateOrderAsync(Order order);
-    Task<bool> UpdateOrderAsync(Order order);
+    Task<Order> CreateOrderAsync(CreateOrder order);
+    Task<bool> UpdateOrderAsync(EditOrder order);
+    Task<List<Order>> SearchOrdersAsync(string query);
     Task<bool> DeleteOrderAsync(Guid id);
     Task<bool> AssignToCourierAsync(Guid orderId, Guid courierId);
     Task<bool> SetInProcessAsync(Guid orderId);

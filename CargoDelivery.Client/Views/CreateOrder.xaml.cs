@@ -9,7 +9,7 @@ public partial class CreateOrder : Window
     public OrderCreateViewModel ViewModel;
     public CreateOrder(IApiService apiService)
     {
-        ViewModel = new OrderCreateViewModel(apiService);
+        ViewModel = new OrderCreateViewModel(apiService, this);
         DataContext = ViewModel;
         InitializeComponent();
     }

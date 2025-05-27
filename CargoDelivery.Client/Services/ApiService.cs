@@ -32,16 +32,22 @@ public class ApiService : IApiService
         return await _httpClient.GetFromJsonAsync<Order>($"orders/{id}");
     }
 
-    public async Task<Order> CreateOrderAsync(Order order)
+    public async Task<Order> CreateOrderAsync(CreateOrder order)
     {
         var response = await _httpClient.PostAsJsonAsync("orders", order);
         return await response.Content.ReadFromJsonAsync<Order>();
     }
 
-    public async Task<bool> UpdateOrderAsync(Order order)
+    public async Task<bool> UpdateOrderAsync(EditOrder order)
     {
         var response = await _httpClient.PutAsJsonAsync("orders", order);
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<List<Order>> SearchOrdersAsync(string query)
+    {
+        var response = await _httpClient.GetFromJsonAsync<PaginatedResponse<Order>>($"orders/search?query={query}");
+        return response.Data;
     }
 
     public async Task<bool> DeleteOrderAsync(Guid id)

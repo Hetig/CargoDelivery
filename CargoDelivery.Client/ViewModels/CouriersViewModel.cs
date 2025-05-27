@@ -15,12 +15,17 @@ public class CouriersViewModel : ViewModelBase
     public ObservableCollection<Courier> Couriers
     {
         get => _couriers;
-        set => SetField(ref _couriers, value);
+        set
+        {
+            _couriers = value;
+            OnPropertyChanged(() => Couriers);
+        }
     }
     public ICommand OrdersCommand { get; }
     public ICommand ClientsCommand { get; }
     public ICommand CouriersCommand { get; }
     public ICommand CreateCourierCommand { get; }
+    public ICommand RefreshCommand { get; }
 
     public CouriersViewModel(IApiService apiService)
     {
@@ -30,6 +35,7 @@ public class CouriersViewModel : ViewModelBase
         ClientsCommand = new RelayCommand(() => ScreenNavigator.GoToClients());
         OrdersCommand = new RelayCommand(() => ScreenNavigator.GoToOrders());
         CouriersCommand = new RelayCommand(() => ScreenNavigator.GoToCouriers());
+        RefreshCommand = new RelayCommand(async () => await RefreshCourier(), null);
         
         LoadCouriers().ConfigureAwait(false);
     }
@@ -38,5 +44,15 @@ public class CouriersViewModel : ViewModelBase
     {
         var couriers = await _apiService.GetCouriersAsync();
         Couriers = new ObservableCollection<Courier>(couriers);
+    }
+
+    private async Task RefreshCourier()
+    {
+        var couriers = await _apiService.GetCouriersAsync();
+        Couriers.Clear();
+        foreach (var courier in couriers)
+        {
+            Couriers.Add(courier);
+        }
     }
 }

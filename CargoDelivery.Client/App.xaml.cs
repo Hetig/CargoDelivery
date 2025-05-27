@@ -26,11 +26,7 @@ public partial class App : Application
     
         var apiService = ServiceProvider.GetRequiredService<IApiService>();
     
-        Screens.CreateOrder = new CreateOrder(apiService);
-        Screens.CreateClient = new CreateClient(apiService);
-        Screens.CreateCourier = new CreateCourier(apiService);
         Screens.Orders = new Orders(apiService);
-        Screens.EditOrder = new EditOrder(apiService);
         Screens.Clients = new Clients(apiService);
         Screens.Couriers = new Couriers(apiService);
     
