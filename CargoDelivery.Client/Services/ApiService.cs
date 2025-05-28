@@ -6,6 +6,9 @@ using System.Windows;
 using CargoDelivery.Client.Enums;
 using CargoDelivery.Client.Models;
 using CargoDelivery.Client.Models.Queries;
+using CargoDelivery.Client.Settings;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Order = CargoDelivery.Client.Models.Order;
 
 namespace CargoDelivery.Client.Services;
@@ -16,8 +19,10 @@ public class ApiService : IApiService
 
     public ApiService(HttpClient httpClient)
     {
+        var url= App.Configuration.GetSection("ApiSettings").GetSection("BaseUrl").Value;
+        
         _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri("http://localhost:8080/api/v1/");
+        _httpClient.BaseAddress = new Uri(url);
     }
 
     public async Task<PaginatedResponse<Order>> GetOrdersAsync(int pageNumber = 1, int pageSize = 10)
