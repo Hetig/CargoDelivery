@@ -20,7 +20,7 @@ public class ClientService : IClientService
     public async Task<Client> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var clientDb = await _clientRepository.GetByIdAsync(id, cancellationToken);
-        return _mapper.Map<Client>(clientDb);
+        return clientDb is not null ? _mapper.Map<Client>(clientDb) : null;
     }
 
     public async Task<List<Client>> GetAllAsync(CancellationToken cancellationToken)

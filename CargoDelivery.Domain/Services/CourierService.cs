@@ -20,7 +20,7 @@ public class CourierService : ICourierService
     public async Task<Courier> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var courierDb = await _courierRepository.GetByIdAsync(id, cancellationToken);
-        return _mapper.Map<Courier>(courierDb);
+        return courierDb is not null ? _mapper.Map<Courier>(courierDb) : null;
     }
 
     public async Task<List<Courier>> GetAllAsync(CancellationToken cancellationToken)
