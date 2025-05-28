@@ -30,6 +30,7 @@
 - **Контейнеризация** Docker
 - **База данных**: PostgreSQL
 - **ORM**: EntityFramework
+- **Logging**: Serilog
 
 
 ## Установка и запуск
@@ -66,6 +67,7 @@
 - PostgreSQL
 - AutoMapper
 - WPF
+- Serilog
 
 ## Контрибьютинг
 
